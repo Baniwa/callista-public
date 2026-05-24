@@ -23,20 +23,37 @@ theme:
 
 nav:
   - Início: index.md
+  - O Projeto:
+      - Apresentação e Motivação: projeto/apresentacao.md
+      - Domínio Legislativo: projeto/dominio-legislativo.md
   - Arquitetura:
-      - Visão Geral: architecture/overview.md
+      - Visão Geral das Camadas: architecture/overview.md
       - Fluxo de Dados: architecture/data-flow.md
+      - Modelagem do Domínio: architecture/modelagem.md
+      - Máquina de Estados: architecture/maquina-estados.md
+      - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
+  - Guia do Desenvolvedor:
+      - Configuração do Ambiente: desenvolvimento/ambiente.md
+      - Convenções de Teste: desenvolvimento/testes.md
   - API: api/endpoints.md
   - Perspectivas:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
 
 markdown_extensions:
   - admonition
-  - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.details
   - toc:
       permalink: true
+  - tables
+  - attr_list
