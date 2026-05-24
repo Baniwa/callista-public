@@ -45,6 +45,7 @@ nav:
   - API: api/endpoints.md
   - Perspectivas:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
+      - O domínio não se importa com o banco de dados: perspectivas/dominio-nao-se-importa-com-banco.md
 
 markdown_extensions:
   - admonition
