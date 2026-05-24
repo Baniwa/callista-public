@@ -1,0 +1,9 @@
+from typing import Optional, Protocol, Sequence
+
+from src.domain.entities.usuario import Usuario
+
+
+class UsuarioRepository(Protocol):
+    def buscar_por_id(self, id: int) -> Optional[Usuario]: ...
+    def listar_ativos_visiveis(self) -> Sequence[Usuario]: ...
+    def salvar(self, usuario: Usuario) -> Usuario: ...
