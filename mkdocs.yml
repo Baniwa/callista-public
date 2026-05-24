@@ -9,8 +9,8 @@ theme:
   language: pt
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
   font:
     text: Inter
     code: JetBrains Mono
@@ -20,6 +20,10 @@ theme:
     - navigation.top
     - toc.integrate
     - search.highlight
+    - content.code.copy
+
+extra_css:
+  - stylesheets/senado.css
 
 nav:
   - Início: index.md
