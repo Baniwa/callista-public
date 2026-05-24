@@ -1,0 +1,40 @@
+site_name: CALLISTA — Documentação Técnica
+site_description: Sistema de Gestão de Pesquisa Legislativa com IA
+site_author: Baniwa
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: pt
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - toc.integrate
+    - search.highlight
+
+nav:
+  - Início: index.md
+  - Arquitetura:
+      - Visão Geral: architecture/overview.md
+      - Fluxo de Dados: architecture/data-flow.md
+  - Decisões (ADR):
+      - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
+  - API: api/endpoints.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
