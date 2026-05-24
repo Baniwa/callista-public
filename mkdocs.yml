@@ -36,6 +36,7 @@ nav:
       - Modelagem do Domínio: architecture/modelagem.md
       - Máquina de Estados: architecture/maquina-estados.md
       - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
+      - Adapters Django ORM: architecture/adapters-orm.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
   - Guia do Desenvolvedor:
