@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"$port = 8001; $listening = (Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | Where-Object { $_.State -eq 'Listen' }); if (-not $listening) { Start-Process python -ArgumentList '-m mkdocs serve --dev-addr 127.0.0.1:8001' -WorkingDirectory 'd:\\Projetos\\callista-public' -WindowStyle Hidden }\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

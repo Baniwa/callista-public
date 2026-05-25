@@ -68,4 +68,4 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
 }
 
-ANTHROPIC_API_KEY = config("ANTHROPIC_API_KEY", default="")
+GEMINI_API_KEY = config("GEMINI_API_KEY", default="")

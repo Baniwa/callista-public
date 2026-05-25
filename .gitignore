@@ -45,3 +45,8 @@ site/
 .coverage
 htmlcov/
 .pytest_cache/
+
+CLAUDE.md
+
+# Claude Code — configurações locais
+.claude/settings.local.json
