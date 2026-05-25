@@ -37,6 +37,7 @@ nav:
       - Máquina de Estados: architecture/maquina-estados.md
       - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
       - Adapters Django ORM: architecture/adapters-orm.md
+      - Adapter de Inteligência Artificial: architecture/adapter-ia.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
   - Guia do Desenvolvedor:
@@ -45,6 +46,8 @@ nav:
   - API: api/endpoints.md
   - Perspectivas:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
+      - O domínio não se importa com o banco de dados: perspectivas/dominio-nao-se-importa-com-banco.md
+      - A IA é só mais um detalhe de infraestrutura: perspectivas/ia-como-detalhe.md
 
 markdown_extensions:
   - admonition
