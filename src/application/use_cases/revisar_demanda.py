@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
 from src.domain.entities.demanda import Demanda
-from src.domain.entities.resposta import Resposta
+from src.domain.entities.revisao import Revisao
 from src.domain.repositories.demanda_repository import DemandaRepository
-from src.domain.repositories.resposta_repository import RespostaRepository
+from src.domain.repositories.revisao_repository import RevisaoRepository
 
 
 @dataclass
@@ -17,7 +17,7 @@ class RevisarDemandaUseCase:
     def __init__(
         self,
         demanda_repo: DemandaRepository,
-        revisao_repo: RespostaRepository,
+        revisao_repo: RevisaoRepository,
     ) -> None:
         self._demanda_repo = demanda_repo
         self._revisao_repo = revisao_repo
@@ -32,7 +32,7 @@ class RevisarDemandaUseCase:
         demanda.marcar_concluida()
 
         self._revisao_repo.salvar(
-            Resposta(id=None, demanda_id=dto.demanda_id, usuario_id=dto.usuario_id, texto=dto.texto)
+            Revisao(id=None, demanda_id=dto.demanda_id, usuario_id=dto.usuario_id, texto=dto.texto)
         )
 
         return self._demanda_repo.salvar(demanda)

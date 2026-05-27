@@ -1,0 +1,9 @@
+from typing import Optional, Protocol, Sequence
+
+from src.domain.entities.origem_demanda import OrigemDemanda
+
+
+class OrigemDemandaRepository(Protocol):
+    def listar(self) -> Sequence[OrigemDemanda]: ...
+    def buscar_por_sigla(self, sigla: str) -> Optional[OrigemDemanda]: ...
+    def salvar(self, origem: OrigemDemanda) -> OrigemDemanda: ...

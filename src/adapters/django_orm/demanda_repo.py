@@ -18,6 +18,9 @@ class DjangoDemandaRepository:
             "status": demanda.status.value,
             "relator_id": demanda.id_relator,
             "revisor_id": demanda.id_revisor,
+            "criador_id": demanda.id_criador,
+            "dat_atribuicao_relator": demanda.dat_atribuicao_relator,
+            "dat_atribuicao_revisor": demanda.dat_atribuicao_revisor,
         }
         if demanda.id is None:
             obj = DemandaModel.objects.create(**dados)
@@ -61,7 +64,7 @@ class DjangoDemandaRepository:
         ).count()
 
     def _to_entity(self, obj: DemandaModel) -> Demanda:
-        demanda = Demanda(
+        return Demanda(
             id=obj.id,
             origem=obj.origem,
             num_origem=obj.num_origem,
@@ -72,5 +75,7 @@ class DjangoDemandaRepository:
             id_relator=obj.relator_id,
             id_revisor=obj.revisor_id,
             dat_cadastro=obj.dat_cadastro or datetime.now(),
+            id_criador=obj.criador_id,
+            dat_atribuicao_relator=obj.dat_atribuicao_relator,
+            dat_atribuicao_revisor=obj.dat_atribuicao_revisor,
         )
-        return demanda

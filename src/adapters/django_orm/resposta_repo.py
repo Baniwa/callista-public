@@ -6,12 +6,23 @@ from .models import RespostaModel
 
 class DjangoRespostaRepository:
     def salvar(self, resposta: Resposta) -> Resposta:
-        obj = RespostaModel.objects.create(
-            demanda_id=resposta.demanda_id,
-            usuario_id=resposta.usuario_id,
-            texto=resposta.texto,
-            editado=resposta.editado,
-        )
+        if resposta.id is None:
+            obj = RespostaModel.objects.create(
+                demanda_id=resposta.demanda_id,
+                usuario_id=resposta.usuario_id,
+                texto=resposta.texto,
+                editado=resposta.editado,
+                editado_por_id=resposta.editado_por_id,
+                dat_edicao=resposta.dat_edicao,
+            )
+        else:
+            RespostaModel.objects.filter(pk=resposta.id).update(
+                texto=resposta.texto,
+                editado=resposta.editado,
+                editado_por_id=resposta.editado_por_id,
+                dat_edicao=resposta.dat_edicao,
+            )
+            obj = RespostaModel.objects.get(pk=resposta.id)
         return self._to_entity(obj)
 
     def buscar_por_demanda(self, demanda_id: int) -> Optional[Resposta]:
@@ -26,4 +37,6 @@ class DjangoRespostaRepository:
             texto=obj.texto,
             dat_resposta=obj.dat_resposta,
             editado=obj.editado,
+            editado_por_id=obj.editado_por_id,
+            dat_edicao=obj.dat_edicao,
         )

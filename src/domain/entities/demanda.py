@@ -18,6 +18,10 @@ class Demanda:
     id_relator: Optional[int] = None
     id_revisor: Optional[int] = None
     dat_cadastro: datetime = field(default_factory=datetime.now)
+    # Campos presentes no Callista 1.0 — necessários para migração sem perda de dados
+    id_criador: Optional[int] = None
+    dat_atribuicao_relator: Optional[datetime] = None
+    dat_atribuicao_revisor: Optional[datetime] = None
 
     @property
     def respondida(self) -> bool:

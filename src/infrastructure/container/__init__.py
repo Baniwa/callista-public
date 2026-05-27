@@ -4,7 +4,10 @@ from src.adapters.ai.gemini_adapter import GeminiAdapter
 from src.adapters.django_orm.afastamento_repo import DjangoAfastamentoRepository
 from src.adapters.django_orm.demanda_repo import DjangoDemandaRepository
 from src.adapters.django_orm.feriado_repo import DjangoFeriadoRepository
+from src.adapters.django_orm.historico_atribuicao_repo import DjangoHistoricoAtribuicaoRepository
+from src.adapters.django_orm.origem_demanda_repo import DjangoOrigemDemandaRepository
 from src.adapters.django_orm.resposta_repo import DjangoRespostaRepository
+from src.adapters.django_orm.revisao_repo import DjangoRevisaoRepository
 from src.adapters.django_orm.usuario_repo import DjangoUsuarioRepository
 from src.application.use_cases.atribuir_relator import AtribuirRelatorUseCase
 from src.application.use_cases.buscar_fontes_oficiais import BuscarFontesOficiaisUseCase
@@ -44,7 +47,7 @@ def build_responder_demanda() -> ResponderDemandaUseCase:
 def build_revisar_demanda() -> RevisarDemandaUseCase:
     return RevisarDemandaUseCase(
         demanda_repo=DjangoDemandaRepository(),
-        revisao_repo=DjangoRespostaRepository(),
+        revisao_repo=DjangoRevisaoRepository(),
     )
 
 
@@ -68,3 +71,15 @@ def build_sugerir_rascunho() -> SugerirRascunhoUseCase:
         resposta_repo=DjangoRespostaRepository(),
         ia=_gemini(),
     )
+
+
+def build_origem_demanda_repo() -> DjangoOrigemDemandaRepository:
+    return DjangoOrigemDemandaRepository()
+
+
+def build_revisao_repo() -> DjangoRevisaoRepository:
+    return DjangoRevisaoRepository()
+
+
+def build_historico_atribuicao_repo() -> DjangoHistoricoAtribuicaoRepository:
+    return DjangoHistoricoAtribuicaoRepository()

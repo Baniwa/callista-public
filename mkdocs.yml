@@ -38,6 +38,7 @@ nav:
       - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
       - Adapters Django ORM: architecture/adapters-orm.md
       - Adapter de Inteligência Artificial: architecture/adapter-ia.md
+      - Migração do Callista 1.0: architecture/migracao-callista1.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
   - Guia do Desenvolvedor:

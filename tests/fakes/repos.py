@@ -11,6 +11,7 @@ from src.domain.entities.afastamento import Afastamento
 from src.domain.entities.demanda import Demanda
 from src.domain.entities.feriado import Feriado
 from src.domain.entities.resposta import Resposta
+from src.domain.entities.revisao import Revisao
 from src.domain.entities.usuario import Usuario
 from src.domain.value_objects.status import StatusDemanda
 
@@ -76,6 +77,20 @@ class FakeUsuarioRepo:
     def salvar(self, usuario: Usuario) -> Usuario:
         self._usuarios[usuario.id] = usuario
         return usuario
+
+
+class FakeRevisaoRepo:
+    def __init__(self, revisao: Optional[Revisao] = None) -> None:
+        self._revisao = revisao
+
+    def salvar(self, revisao: Revisao) -> Revisao:
+        self._revisao = revisao
+        return revisao
+
+    def buscar_por_demanda(self, demanda_id: int) -> Optional[Revisao]:
+        if self._revisao and self._revisao.demanda_id == demanda_id:
+            return self._revisao
+        return None
 
 
 class FakeAfastamentoRepo:

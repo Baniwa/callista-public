@@ -46,6 +46,26 @@ class AfastamentoModel(models.Model):
         return f"{self.usuario.nome}: {self.dat_inicial} → {self.dat_final}"
 
 
+class OrigemDemandaModel(models.Model):
+    """Origem/órgão de uma demanda, com prazo padrão configurável.
+    Equivale ao model OrigemDemanda do Callista 1.0 (tabela origem_demanda).
+    No 2.0 a sigla ainda existe como CharField em DemandaModel para compatibilidade
+    retroativa — este model permite a normalização completa.
+    """
+    sigla = models.CharField(max_length=10, unique=True)
+    nome = models.CharField(max_length=255)
+    prazo_padrao_dias = models.PositiveSmallIntegerField(default=5)
+    tem_numero = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "callista_origem_demanda"
+        verbose_name = "Origem de Demanda"
+        verbose_name_plural = "Origens de Demandas"
+
+    def __str__(self) -> str:
+        return f"{self.sigla} — {self.nome}"
+
+
 class DemandaModel(models.Model):
     STATUS_CHOICES = [
         ("PR", "Pendente de Resposta"),
@@ -55,6 +75,13 @@ class DemandaModel(models.Model):
     ]
 
     origem = models.CharField(max_length=50)
+    origem_ref = models.ForeignKey(
+        OrigemDemandaModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="demandas",
+    )
     num_origem = models.IntegerField(null=True, blank=True)
     texto = models.TextField()
     dat_chegada = models.DateField()
@@ -67,12 +94,21 @@ class DemandaModel(models.Model):
         on_delete=models.SET_NULL,
         related_name="demandas_como_relator",
     )
+    dat_atribuicao_relator = models.DateTimeField(null=True, blank=True)
     revisor = models.ForeignKey(
         UsuarioModel,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="demandas_como_revisor",
+    )
+    dat_atribuicao_revisor = models.DateTimeField(null=True, blank=True)
+    criador = models.ForeignKey(
+        UsuarioModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="demandas_criadas",
     )
     dat_cadastro = models.DateTimeField(auto_now_add=True)
 
@@ -88,10 +124,20 @@ class RespostaModel(models.Model):
     demanda = models.ForeignKey(
         DemandaModel, on_delete=models.CASCADE, related_name="respostas"
     )
-    usuario = models.ForeignKey(UsuarioModel, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="respostas"
+    )
     texto = models.TextField()
     dat_resposta = models.DateTimeField(auto_now_add=True)
     editado = models.BooleanField(default=False)
+    dat_edicao = models.DateTimeField(null=True, blank=True)
+    editado_por = models.ForeignKey(
+        UsuarioModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="respostas_editadas",
+    )
 
     class Meta:
         db_table = "callista_resposta"
@@ -99,3 +145,81 @@ class RespostaModel(models.Model):
 
     def __str__(self) -> str:
         return f"Resposta de {self.usuario.nome} para demanda #{self.demanda_id}"
+
+
+class RevisaoModel(models.Model):
+    """Revisão de uma demanda — entidade separada da Resposta.
+    Equivale ao model FeedbackDemandas do Callista 1.0 (tabela feedback_demandas).
+    """
+    demanda = models.OneToOneField(
+        DemandaModel, on_delete=models.CASCADE, related_name="revisao"
+    )
+    usuario = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="revisoes"
+    )
+    texto = models.TextField()
+    dat_revisao = models.DateTimeField(auto_now_add=True)
+    editado = models.BooleanField(default=False)
+    dat_edicao = models.DateTimeField(null=True, blank=True)
+    editado_por = models.ForeignKey(
+        UsuarioModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="revisoes_editadas",
+    )
+
+    class Meta:
+        db_table = "callista_revisao"
+        ordering = ["dat_revisao"]
+
+    def __str__(self) -> str:
+        return f"Revisão de {self.usuario.nome} para demanda #{self.demanda_id}"
+
+
+class HistoricoAtribuicaoModel(models.Model):
+    """Rastreia cada atribuição de relator ou revisor a uma demanda.
+    Equivale ao model HistoricoAtribuicao do Callista 1.0.
+    """
+    TIPO_CHOICES = [
+        ("RES", "Resposta"),
+        ("REV", "Revisão"),
+    ]
+
+    demanda = models.ForeignKey(
+        DemandaModel, on_delete=models.CASCADE, related_name="historico_atribuicoes"
+    )
+    usuario = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="historico_atribuicoes"
+    )
+    tipo = models.CharField(max_length=3, choices=TIPO_CHOICES)
+    data_atribuicao = models.DateTimeField(auto_now_add=True)
+    valido = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "callista_historico_atrib"
+        ordering = ["data_atribuicao"]
+
+    def __str__(self) -> str:
+        return f"{self.tipo} — demanda #{self.demanda_id} → {self.usuario.nome}"
+
+
+class PendenciaExternaModel(models.Model):
+    """Justificativa e controle de tempo para demandas com status PE.
+    Equivale ao model PendenciaExterna do Callista 1.0 (tabela pendencia_externa).
+    """
+    demanda = models.OneToOneField(
+        DemandaModel, on_delete=models.CASCADE, related_name="pendencia_externa"
+    )
+    justificativa = models.TextField()
+    criador = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="pendencias_criadas"
+    )
+    data_inicio = models.DateTimeField(auto_now_add=True)
+    data_fim = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "callista_pendencia_externa"
+
+    def __str__(self) -> str:
+        return f"Pendência externa — demanda #{self.demanda_id}"
