@@ -9,7 +9,7 @@ Uso:
     python manage.py importar_callista1 --db-path ... --dry-run   # simula sem salvar
 """
 import sqlite3
-from datetime import timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
@@ -26,6 +26,18 @@ from src.adapters.django_orm.models import (
     AfastamentoModel,
     FeriadoModel,
 )
+
+
+def _dt(value: str | None):
+    """Converte string datetime do SQLite para datetime aware (UTC)."""
+    if not value:
+        return None
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(value, fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    return None
 
 
 class Command(BaseCommand):
@@ -249,9 +261,9 @@ class Command(BaseCommand):
                         "dias_prazo": prazo_dias,
                         "status": row["status"],
                         "relator_id": relator_id,
-                        "dat_atribuicao_relator": row["data_atribuicao_resposta"],
+                        "dat_atribuicao_relator": _dt(row["data_atribuicao_resposta"]),
                         "revisor_id": revisor_id,
-                        "dat_atribuicao_revisor": row["data_atribuicao_revisao"],
+                        "dat_atribuicao_revisor": _dt(row["data_atribuicao_revisao"]),
                         "criador_id": criador_id,
                     },
                 )
@@ -301,7 +313,7 @@ class Command(BaseCommand):
                         "usuario_id": usuario_id,
                         "texto": row["des_resposta"],
                         "editado": bool(row["editado"]),
-                        "dat_edicao": row["dat_edicao"],
+                        "dat_edicao": _dt(row["dat_edicao"]),
                         "editado_por_id": editado_por_id,
                     },
                 )
@@ -345,7 +357,7 @@ class Command(BaseCommand):
                         "usuario_id": usuario_id,
                         "texto": row["des_feedback"],
                         "editado": bool(row["editado"]),
-                        "dat_edicao": row["dat_edicao"],
+                        "dat_edicao": _dt(row["dat_edicao"]),
                         "editado_por_id": editado_por_id,
                     },
                 )
