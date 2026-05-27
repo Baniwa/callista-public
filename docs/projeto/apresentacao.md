@@ -4,7 +4,7 @@
 
 O CALLISTA é um sistema de gestão de demandas de pesquisa legislativa desenvolvido como projeto de portfólio público, com código aberto, inspirado em um sistema homônimo implantado na Assessoria de Pesquisa Legislativa do Senado Federal brasileiro.
 
-O sistema original — aqui chamado de CALLISTA 1.x — foi construído como um monólito Django funcional e operou em produção em ambiente real. O presente projeto reimplementa suas regras de negócio do zero, utilizando **Clean Architecture** e princípios de **Domain-Driven Design (DDD)**, com o objetivo duplo de:
+O sistema original — aqui chamado de **CALLISTA 1.x** — foi construído como um monólito Django funcional e operou em produção na SEPEL (Senado Federal), acumulando mais de **1.300 demandas** processadas. O presente projeto reimplementa suas regras de negócio do zero, utilizando **Clean Architecture** e princípios de **Domain-Driven Design (DDD)**, com o objetivo duplo de:
 
 1. Demonstrar como lógica de negócio complexa pode ser modelada independentemente de frameworks;
 2. Servir como material de estudo e referência para sistemas de informação no setor público.
@@ -25,13 +25,17 @@ Assessorias de pesquisa legislativa recebem demandas de múltiplos órgãos — 
 - Dificuldade em controlar prazos em **dias úteis**, respeitando feriados nacionais e afastamentos individuais
 - Ausência de histórico auditável de respostas e revisões
 
-### 2.2 O problema de distribuição justa
+### 2.2 O problema do relatório de gestão
+
+Mensalmente, o gestor precisava compilar manualmente um **Plano de Gestão (PG)** — relatório que contabiliza pontuação individual de cada pesquisador (demandas respondidas × peso), compara com a meta proporcional ao período trabalhado e gera documentos formais para prestação de contas. No sistema original, esse processo consumia horas de trabalho repetitivo por período.
+
+### 2.3 O problema de distribuição justa
 
 Um dos desafios centrais identificados no sistema original é a **atribuição equitativa de demandas**. Em equipes pequenas (5–15 pesquisadores), a distribuição manual tende a favorecer membros mais visíveis ou disponíveis no momento, ignorando quem está mais atrasado em relação à meta mensal.
 
 O CALLISTA resolve esse problema com um **algoritmo de sorteio ponderado pela meta**, detalhado na seção [Algoritmo de Sorteio Justo](../architecture/sorteio-justo.md).
 
-### 2.3 A fragilidade arquitetural do sistema original
+### 2.4 A fragilidade arquitetural do sistema original
 
 O CALLISTA 1.x foi construído seguindo o padrão Django convencional: lógica de negócio em `models.py`, consultas de banco em `views.py`, e regras de validação em `forms.py`. Essa abordagem, embora produtiva no curto prazo, gerou acoplamento que dificultava:
 
@@ -41,7 +45,26 @@ O CALLISTA 1.x foi construído seguindo o padrão Django convencional: lógica d
 
 ---
 
-## 3. Objetivos
+## 3. Solução — Fluxo Automatizado
+
+O CALLISTA automatiza o ciclo de vida de uma demanda em cinco etapas:
+
+```
+1. Cadastro          → Pesquisador registra texto, origem e data de chegada
+2. Atribuição        → Sistema sorteia relator e revisor automaticamente
+3. Prazo             → Sistema calcula a data-limite em dias úteis
+4. Resposta/Revisão  → Relator responde; revisor homologa ou devolve
+5. Relatórios        → Sistema gera PG, contagem de pontos e planilhas
+```
+
+Além do fluxo principal, o sistema suporta:
+- **Trocas de demandas** — redistribuição negociada entre membros da equipe
+- **Pendências externas** — suspensão temporária enquanto aguarda órgão externo
+- **Afastamentos antecipados** — membro é retirado do sorteio 2 dias úteis antes da saída formal
+
+---
+
+## 4. Objetivos
 
 | # | Objetivo | Indicador de Alcance |
 |---|---|---|
@@ -54,7 +77,7 @@ O CALLISTA 1.x foi construído seguindo o padrão Django convencional: lógica d
 
 ---
 
-## 4. Escopo
+## 5. Escopo
 
 ### O que o CALLISTA é
 
@@ -72,7 +95,7 @@ O CALLISTA 1.x foi construído seguindo o padrão Django convencional: lógica d
 
 ---
 
-## 5. Motivação Acadêmica
+## 6. Motivação Acadêmica
 
 Este projeto situa-se na intersecção de três áreas:
 
@@ -87,7 +110,7 @@ O uso de modelos de linguagem de grande escala (LLMs) para pesquisa de fontes no
 
 ---
 
-## 6. Referências
+## 7. Referências
 
 - MARTIN, Robert C. *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall, 2017.
 - EVANS, Eric. *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley, 2003.

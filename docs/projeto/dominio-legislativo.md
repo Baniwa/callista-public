@@ -129,7 +129,8 @@ Se um pesquisador tirou 5 dias de licença em um mês com 20 dias úteis, sua me
 | **Afastamento** | Período em que um membro está indisponível (férias, licença, treinamento) |
 | **Sorteio Justo** | Algoritmo de distribuição de demandas ponderado pela meta mensal |
 | **Meta Mensal** | Número de demandas respondidas/revisadas esperado por mês |
-| **Plano de Gestão** | Período de avaliação de desempenho com metas e pontuações definidas |
+| **Plano de Gestão (PG)** | Período de avaliação (anual, subdividido em trimestres) com pontuação por demanda respondida/revisada — gera relatório formal de desempenho da equipe |
+| **Troca de demanda** | Redistribuição negociada de uma demanda entre membros, registrada com histórico |
 | **SGM** | Secretaria-Geral da Mesa — principal órgão requisitante |
 | **LAI** | Lei de Acesso à Informação (Lei nº 12.527/2011) |
 | **PL** | Projeto de Lei — matéria legislativa rastreável via API do Senado |
