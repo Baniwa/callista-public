@@ -16,7 +16,7 @@ from src.application.ports.ai_port import FonteOficial, IAPort
 
 logger = logging.getLogger(__name__)
 
-_MODELO = "gemini-2.0-flash"
+_MODELO = "gemini-2.5-flash-lite"
 
 _PROMPT_FONTES = """Você é um assistente especializado em legislação e pesquisa parlamentar brasileira.
 
@@ -71,7 +71,7 @@ Responda apenas com o texto do rascunho."""
 
 
 class GeminiAdapter:
-    """Implementa IAPort usando o modelo Gemini 2.0 Flash (Google)."""
+    """Implementa IAPort usando o modelo Gemini 2.5 Flash Lite (Google)."""
 
     def __init__(self, api_key: str) -> None:
         self._client = genai.Client(api_key=api_key)
