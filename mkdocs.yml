@@ -30,6 +30,7 @@ nav:
   - O Projeto:
       - Apresentação e Motivação: projeto/apresentacao.md
       - Domínio Legislativo: projeto/dominio-legislativo.md
+      - Callista 1.0 — Referência de UI: projeto/callista1-referencia-ui.md
   - Arquitetura:
       - Visão Geral das Camadas: architecture/overview.md
       - Fluxo de Dados: architecture/data-flow.md
