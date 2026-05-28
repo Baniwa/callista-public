@@ -16,7 +16,7 @@
 
   <main class="flex-1 flex flex-col min-h-screen overflow-auto">
     <header class="px-8 py-5 border-b flex items-center justify-between"
-            style="border-color:#DBE8FB; background-color:#FFFFFF;">
+            style="border-color:#DBE8FB; background-color:#FFFFFF; box-shadow:0 1px 4px rgba(7,29,65,0.07);">
       <h1 class="text-lg font-semibold" style="color:#071D41;">{% block page_title %}{% endblock %}</h1>
       <div class="text-sm" style="color:#5C6670;">
         {% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}

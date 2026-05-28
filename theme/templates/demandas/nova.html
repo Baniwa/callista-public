@@ -21,7 +21,7 @@
   </div>
   {% endif %}
 
-  <div class="rounded-xl p-6" style="background-color:#FFFFFF; border:1px solid #DBE8FB;">
+  <div class="rounded-xl p-6" style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
     <form method="post" action="{% url 'callista:demanda_nova' %}">
       {% csrf_token %}
 

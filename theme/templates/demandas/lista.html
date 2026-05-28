@@ -17,7 +17,7 @@
 </div>
 
 <!-- Tabela -->
-<div class="rounded-xl overflow-hidden" style="background-color:#FFFFFF; border:1px solid #DBE8FB;">
+<div class="rounded-xl overflow-hidden" style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
   <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #DBE8FB;">
     <h2 class="font-semibold" style="color:#071D41;">
       {{ rows|length }} demanda{{ rows|length|pluralize }}
@@ -61,9 +61,9 @@
               {{ item.demanda.texto }}
             </a>
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 whitespace-nowrap">
             <span class="text-xs px-2 py-0.5 rounded font-medium"
-                  style="background-color:#EAF1FB; color:#1351B4;">
+                  style="background-color:#EAF1FB; color:#1351B4; white-space:nowrap;">
               {{ item.demanda.origem }}
             </span>
           </td>
