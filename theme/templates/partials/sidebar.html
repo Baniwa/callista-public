@@ -25,8 +25,8 @@
     <!-- DEMANDAS -->
     <div class="px-4 mb-1">
       <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#5992ED;">Demandas</p>
-      {% include "partials/nav_item.html" with href="/" label="Minhas demandas" icon="inbox" %}
-      {% include "partials/nav_item.html" with href="/" label="Demandas da equipe" icon="users" %}
+      {% include "partials/nav_item.html" with href="/" label="Pauta do dia" icon="inbox" %}
+      {% include "partials/nav_item.html" with href="/demandas/" label="Todas as demandas" icon="users" %}
       {% include "partials/nav_item.html" with href="/" label="Pesquisa de demandas" icon="search" %}
       {% include "partials/nav_item.html" with href="/" label="Trocas de demandas" icon="arrows" %}
     </div>
@@ -47,7 +47,7 @@
     <!-- CADASTRAR -->
     <div class="px-4 mb-1">
       <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#5992ED;">Cadastrar</p>
-      {% include "partials/nav_item.html" with href="/" label="Demandas" icon="plus" %}
+      {% include "partials/nav_item.html" with href="/demandas/nova/" label="Demandas" icon="plus" %}
       {% include "partials/nav_item.html" with href="/" label="Preferências" icon="cog" %}
       {% include "partials/nav_item.html" with href="/" label="Afastamentos" icon="calendar" %}
     </div>

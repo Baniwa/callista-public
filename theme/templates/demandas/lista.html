@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Demandas — CALLISTA{% endblock %}
+{% block page_title %}Demandas{% endblock %}
+
+{% block content %}
+
+<!-- Filtros de status -->
+<div class="flex flex-wrap gap-2 mb-6">
+  {% for opcao in status_opcoes %}
+  <a href="?status={{ opcao.value }}"
+     class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+     style="{% if status_filtro == opcao.value %}background-color:#1351B4; color:white;{% else %}background-color:#1E3A54; color:#94a3b8;{% endif %}">
+    {{ opcao.label }}
+  </a>
+  {% endfor %}
+</div>
+
+<!-- Tabela -->
+<div class="rounded-xl overflow-hidden" style="background-color:#0D1B2A; border:1px solid #1E3A54;">
+  <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #1E3A54;">
+    <h2 class="font-semibold text-slate-100">
+      {{ rows|length }} demanda{{ rows|length|pluralize }}
+    </h2>
+    <a href="{% url 'callista:demanda_nova' %}"
+       class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+       style="background-color:#1351B4; color:white;">
+      + Nova demanda
+    </a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-xs uppercase tracking-wider text-slate-500" style="border-bottom:1px solid #1E3A54;">
+          <th class="px-6 py-3 text-left">#</th>
+          <th class="px-6 py-3 text-left">Texto</th>
+          <th class="px-6 py-3 text-left">Órgão</th>
+          <th class="px-6 py-3 text-left">Chegada</th>
+          <th class="px-6 py-3 text-left">Deadline</th>
+          <th class="px-6 py-3 text-right">Prazo</th>
+          <th class="px-6 py-3 text-left">Status</th>
+          <th class="px-6 py-3 text-left">Relator</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in rows %}
+        <tr class="border-t transition-colors hover:bg-white/5" style="border-color:#1E3A54;">
+          <td class="px-6 py-4 text-slate-500 font-mono text-xs">
+            <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}" class="hover:text-slate-300">
+              {{ item.demanda.id }}
+            </a>
+          </td>
+          <td class="px-6 py-4 text-slate-200 max-w-xs">
+            <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}" class="line-clamp-2 block hover:text-white">
+              {{ item.demanda.texto }}
+            </a>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-xs px-2 py-0.5 rounded font-medium"
+                  style="background-color:#1E3A54; color:#C5D4EB;">
+              {{ item.demanda.origem }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+            {{ item.demanda.dat_chegada|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+            {{ item.data_limite|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4 text-right font-mono font-semibold whitespace-nowrap
+                     {% if item.dias_restantes < 0 %}text-red-400{% elif item.dias_restantes <= 1 %}text-yellow-400{% else %}text-slate-300{% endif %}">
+            {{ item.dias_restantes }}d
+          </td>
+          <td class="px-6 py-4">
+            {% include "partials/status_badge.html" with status=item.demanda.status %}
+          </td>
+          <td class="px-6 py-4 text-slate-400">{{ item.relator|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="px-6 py-12 text-center text-slate-500">
+            Nenhuma demanda encontrada.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

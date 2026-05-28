@@ -54,3 +54,5 @@ CLAUDE.md
 # Node / Tailwind
 node_modules/
 theme/static_src/node_modules/
+# CSS compilado do Tailwind deve ser commitado para o projeto funcionar após clone
+!theme/static/css/dist/

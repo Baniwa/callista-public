@@ -35,3 +35,34 @@ body {
   background-color: var(--color-surface);
   color: #e2e8f0;
 }
+
+@layer components {
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.375rem;
+  }
+
+  .form-input {
+    width: 100%;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #e2e8f0;
+    padding: 0.5rem 0.75rem;
+    background-color: #162B40;
+    border: 1px solid #1E3A54;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-input:focus {
+    border-color: #2670E8;
+  }
+
+  .form-input option {
+    background-color: #0D1B2A;
+  }
+}

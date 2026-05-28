@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Demanda — CALLISTA{% endblock %}
+{% block page_title %}Nova Demanda{% endblock %}
+
+{% block content %}
+
+<div class="mb-6">
+  <a href="{% url 'callista:demanda_lista' %}"
+     class="text-sm text-slate-400 hover:text-slate-200">
+    ← Voltar para demandas
+  </a>
+</div>
+
+<div class="max-w-2xl">
+
+  {% if erro %}
+  <div class="mb-6 rounded-lg px-4 py-3 text-sm"
+       style="background-color:#2D1B1B; border:1px solid #7F1D1D; color:#FCA5A5;">
+    {{ erro }}
+  </div>
+  {% endif %}
+
+  <div class="rounded-xl p-6" style="background-color:#0D1B2A; border:1px solid #1E3A54;">
+    <form method="post" action="{% url 'callista:demanda_nova' %}">
+      {% csrf_token %}
+
+      <div class="flex flex-col gap-5">
+
+        <!-- Origem + Número -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="origem">Órgão de origem</label>
+            <select name="origem" id="origem" class="form-input" required
+                    onchange="atualizarCampos(this)">
+              <option value="">Selecione...</option>
+              {% for origem in origens %}
+              <option value="{{ origem.sigla }}"
+                      data-prazo="{{ origem.prazo_padrao_dias }}"
+                      data-tem-numero="{{ origem.tem_numero|yesno:'true,false' }}"
+                      {% if post.origem == origem.sigla %}selected{% endif %}>
+                {{ origem.sigla }} — {{ origem.nome }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div id="campo-num-origem"
+               style="{% if not post.num_origem %}display:none;{% endif %}">
+            <label class="form-label" for="num_origem">Número de origem</label>
+            <input type="number" name="num_origem" id="num_origem"
+                   value="{{ post.num_origem|default:'' }}"
+                   class="form-input" min="1">
+          </div>
+        </div>
+
+        <!-- Texto -->
+        <div>
+          <label class="form-label" for="texto">Texto da demanda</label>
+          <textarea name="texto" id="texto" rows="6" class="form-input" required
+                    placeholder="Descreva a demanda recebida...">{{ post.texto|default:"" }}</textarea>
+        </div>
+
+        <!-- Chegada + Prazo -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="form-label" for="dat_chegada">Data de chegada</label>
+            <input type="date" name="dat_chegada" id="dat_chegada"
+                   value="{{ post.dat_chegada|default:hoje }}"
+                   class="form-input" required>
+          </div>
+          <div>
+            <label class="form-label" for="dias_prazo">Prazo (dias úteis)</label>
+            <input type="number" name="dias_prazo" id="dias_prazo"
+                   value="{{ post.dias_prazo|default:'5' }}"
+                   class="form-input" required min="1">
+          </div>
+        </div>
+
+        <!-- Ações -->
+        <div class="flex gap-3 pt-2">
+          <button type="submit"
+                  class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  style="background-color:#1351B4; color:white;">
+            Cadastrar demanda
+          </button>
+          <a href="{% url 'callista:demanda_lista' %}"
+             class="px-4 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors"
+             style="background-color:#1E3A54;">
+            Cancelar
+          </a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function atualizarCampos(select) {
+  const opt = select.options[select.selectedIndex];
+  const prazo = opt.dataset.prazo;
+  const temNumero = opt.dataset.temNumero === 'true';
+
+  if (prazo) {
+    document.getElementById('dias_prazo').value = prazo;
+  }
+
+  const campoNum = document.getElementById('campo-num-origem');
+  const inputNum = document.getElementById('num_origem');
+  if (temNumero) {
+    campoNum.style.display = '';
+    inputNum.required = true;
+  } else {
+    campoNum.style.display = 'none';
+    inputNum.required = false;
+    inputNum.value = '';
+  }
+}
+</script>
+
+{% endblock %}
