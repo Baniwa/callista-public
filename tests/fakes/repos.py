@@ -10,6 +10,7 @@ from typing import Optional, Sequence
 from src.domain.entities.afastamento import Afastamento
 from src.domain.entities.demanda import Demanda
 from src.domain.entities.feriado import Feriado
+from src.domain.entities.projeto_lei import ProjetoLei
 from src.domain.entities.resposta import Resposta
 from src.domain.entities.revisao import Revisao
 from src.domain.entities.usuario import Usuario
@@ -107,3 +108,27 @@ class FakeFeriadoRepo:
 
     def listar(self) -> Sequence[Feriado]:
         return self._feriados
+
+
+class FakeProjetoLeiRepo:
+    def __init__(self, pls: list[ProjetoLei] | None = None) -> None:
+        self._pls: dict[int, ProjetoLei] = {}
+        self._next_id = 1
+        for pl in pls or []:
+            self._pls[pl.id_senado] = pl
+
+    def salvar(self, pl: ProjetoLei) -> ProjetoLei:
+        if pl.id is None:
+            pl.id = self._next_id
+            self._next_id += 1
+        self._pls[pl.id_senado] = pl
+        return pl
+
+    def buscar_por_id(self, id: int) -> Optional[ProjetoLei]:
+        return next((pl for pl in self._pls.values() if pl.id == id), None)
+
+    def buscar_por_id_senado(self, id_senado: int) -> Optional[ProjetoLei]:
+        return self._pls.get(id_senado)
+
+    def listar_por_demanda(self, demanda_id: int) -> Sequence[ProjetoLei]:
+        return [pl for pl in self._pls.values() if pl.demanda_id == demanda_id]

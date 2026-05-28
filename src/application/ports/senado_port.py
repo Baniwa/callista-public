@@ -1,25 +1,8 @@
-from dataclasses import dataclass
-from typing import Optional, Protocol, Sequence
+from typing import Optional, Protocol
 
-
-@dataclass
-class EtapaTramitacao:
-    descricao: str
-    data: Optional[str]
-    concluida: bool
-
-
-@dataclass
-class ProjetoLei:
-    sigla: str
-    numero: int
-    ano: int
-    ementa: str
-    autor: str
-    tramitacao: Sequence[EtapaTramitacao]
-    url_texto_integral: str
+from src.domain.entities.projeto_lei import ProjetoLei
 
 
 class SenadoPort(Protocol):
     def buscar_pl(self, sigla: str, numero: int, ano: int) -> Optional[ProjetoLei]: ...
-    def pesquisar_pls(self, termo: str) -> Sequence[ProjetoLei]: ...
+    def buscar_por_id(self, id_senado: int) -> Optional[ProjetoLei]: ...

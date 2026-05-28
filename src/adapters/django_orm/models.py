@@ -223,3 +223,40 @@ class PendenciaExternaModel(models.Model):
 
     def __str__(self) -> str:
         return f"Pendência externa — demanda #{self.demanda_id}"
+
+
+class ProjetoLeiModel(models.Model):
+    """Snapshot de um Projeto de Lei rastreado via API do Senado Federal.
+
+    Cada vez que o use case RastrearPL é executado, este registro é atualizado
+    com os dados mais recentes da API. A comparação com o snapshot anterior
+    permite detectar mudanças de status.
+    """
+    id_senado = models.IntegerField(unique=True)
+    identificacao = models.CharField(max_length=50)
+    sigla = models.CharField(max_length=10)
+    numero = models.IntegerField()
+    ano = models.IntegerField()
+    ementa = models.TextField()
+    tramitando = models.BooleanField()
+    situacao_atual = models.CharField(max_length=200)
+    sigla_situacao = models.CharField(max_length=20, blank=True)
+    dat_situacao = models.DateField()
+    url_documento = models.CharField(max_length=500, blank=True)
+    autoria = models.CharField(max_length=500, blank=True)
+    dat_ultima_atualizacao = models.DateTimeField()
+    demanda = models.ForeignKey(
+        DemandaModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="projetos_lei",
+    )
+    dat_snapshot = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "callista_projeto_lei"
+        ordering = ["-dat_ultima_atualizacao"]
+
+    def __str__(self) -> str:
+        return self.identificacao
