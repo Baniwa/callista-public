@@ -8,21 +8,21 @@
 <!-- KPIs -->
 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
 
-  {% include "partials/kpi_card.html" with label="Em Aberto" value=kpis.em_aberto color="#2670E8" %}
-  {% include "partials/kpi_card.html" with label="Para Responder" value=kpis.para_responder color="#EAB308" %}
-  {% include "partials/kpi_card.html" with label="Para Revisar" value=kpis.para_revisar color="#3B82F6" %}
-  {% include "partials/kpi_card.html" with label="Atrasadas" value=kpis.atrasadas color="#EF4444" %}
-  {% include "partials/kpi_card.html" with label="Finalizadas Hoje" value=kpis.finalizadas_hoje color="#22C55E" %}
+  {% include "partials/kpi_card.html" with label="Em Aberto" value=kpis.em_aberto color="#1351B4" %}
+  {% include "partials/kpi_card.html" with label="Para Responder" value=kpis.para_responder color="#92400E" %}
+  {% include "partials/kpi_card.html" with label="Para Revisar" value=kpis.para_revisar color="#1E40AF" %}
+  {% include "partials/kpi_card.html" with label="Atrasadas" value=kpis.atrasadas color="#DC2626" %}
+  {% include "partials/kpi_card.html" with label="Finalizadas Hoje" value=kpis.finalizadas_hoje color="#166534" %}
 
 </div>
 
 <!-- Tabela de demandas ativas -->
-<div class="rounded-xl overflow-hidden" style="background-color:#0D1B2A; border:1px solid #1E3A54;">
-  <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #1E3A54;">
-    <h2 class="font-semibold text-slate-100">Minhas Demandas Ativas</h2>
-    <a href="#"
+<div class="rounded-xl overflow-hidden" style="background-color:#FFFFFF; border:1px solid #DBE8FB;">
+  <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #DBE8FB;">
+    <h2 class="font-semibold" style="color:#071D41;">Minhas Demandas Ativas</h2>
+    <a href="{% url 'callista:demanda_nova' %}"
        class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
-       style="background-color:#1351B4; color:white;" href="#">
+       style="background-color:#1351B4; color:white;">
       + Nova demanda
     </a>
   </div>
@@ -30,7 +30,7 @@
   <div class="overflow-x-auto">
     <table class="w-full text-sm">
       <thead>
-        <tr class="text-xs uppercase tracking-wider text-slate-500" style="border-bottom:1px solid #1E3A54;">
+        <tr class="text-xs uppercase tracking-wider" style="border-bottom:1px solid #DBE8FB; color:#5C6670; background-color:#F0F4F8;">
           <th class="px-6 py-3 text-left">#</th>
           <th class="px-6 py-3 text-left">Texto</th>
           <th class="px-6 py-3 text-left">Órgão</th>
@@ -44,37 +44,46 @@
       </thead>
       <tbody>
         {% for item in demandas %}
-        <tr class="border-t transition-colors hover:bg-white/5"
-            style="border-color:#1E3A54;">
-          <td class="px-6 py-4 text-slate-500 font-mono text-xs">{{ item.demanda.id }}</td>
-          <td class="px-6 py-4 text-slate-200 max-w-xs">
-            <span class="line-clamp-2">{{ item.demanda.texto }}</span>
+        <tr class="border-t transition-colors"
+            style="border-color:#EDF5FF;"
+            onmouseover="this.style.backgroundColor='#F0F7FF'"
+            onmouseout="this.style.backgroundColor=''">
+          <td class="px-6 py-4 font-mono text-xs" style="color:#5C6670;">
+            <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}" style="color:#5C6670;">
+              {{ item.demanda.id }}
+            </a>
+          </td>
+          <td class="px-6 py-4 max-w-xs">
+            <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}"
+               class="line-clamp-2 block" style="color:#333333;">
+              {{ item.demanda.texto }}
+            </a>
           </td>
           <td class="px-6 py-4">
             <span class="text-xs px-2 py-0.5 rounded font-medium"
-                  style="background-color:#1E3A54; color:#C5D4EB;">
+                  style="background-color:#EAF1FB; color:#1351B4;">
               {{ item.demanda.origem }}
             </span>
           </td>
-          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+          <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
             {{ item.demanda.dat_chegada|date:"d/m/Y" }}
           </td>
-          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+          <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
             {{ item.data_limite|date:"d/m/Y" }}
           </td>
           <td class="px-6 py-4 text-right font-mono font-semibold whitespace-nowrap
-                     {% if item.dias_restantes < 0 %}text-red-400{% elif item.dias_restantes <= 1 %}text-yellow-400{% else %}text-slate-300{% endif %}">
+                     {% if item.dias_restantes < 0 %}text-red-600{% elif item.dias_restantes <= 1 %}text-yellow-600{% else %}text-gray-600{% endif %}">
             {{ item.dias_restantes }}d
           </td>
           <td class="px-6 py-4">
             {% include "partials/status_badge.html" with status=item.demanda.status %}
           </td>
-          <td class="px-6 py-4 text-slate-400">{{ item.relator|default:"—" }}</td>
-          <td class="px-6 py-4 text-slate-400">{{ item.revisor|default:"—" }}</td>
+          <td class="px-6 py-4" style="color:#5C6670;">{{ item.relator|default:"—" }}</td>
+          <td class="px-6 py-4" style="color:#5C6670;">{{ item.revisor|default:"—" }}</td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="9" class="px-6 py-12 text-center text-slate-500">
+          <td colspan="9" class="px-6 py-12 text-center" style="color:#9CA3AF;">
             Nenhuma demanda ativa no momento.
           </td>
         </tr>

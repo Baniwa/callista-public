@@ -7,7 +7,7 @@
 
 <div class="mb-6">
   <a href="{% url 'callista:demanda_lista' %}"
-     class="text-sm text-slate-400 hover:text-slate-200">
+     class="text-sm transition-colors" style="color:#1351B4;">
     ← Voltar para demandas
   </a>
 </div>
@@ -16,12 +16,12 @@
 
   {% if erro %}
   <div class="mb-6 rounded-lg px-4 py-3 text-sm"
-       style="background-color:#2D1B1B; border:1px solid #7F1D1D; color:#FCA5A5;">
+       style="background-color:#FFF1F2; border:1px solid #FECDD3; color:#9F1239;">
     {{ erro }}
   </div>
   {% endif %}
 
-  <div class="rounded-xl p-6" style="background-color:#0D1B2A; border:1px solid #1E3A54;">
+  <div class="rounded-xl p-6" style="background-color:#FFFFFF; border:1px solid #DBE8FB;">
     <form method="post" action="{% url 'callista:demanda_nova' %}">
       {% csrf_token %}
 
@@ -84,8 +84,8 @@
             Cadastrar demanda
           </button>
           <a href="{% url 'callista:demanda_lista' %}"
-             class="px-4 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors"
-             style="background-color:#1E3A54;">
+             class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
+             style="background-color:#EAF1FB; color:#1351B4;">
             Cancelar
           </a>
         </div>

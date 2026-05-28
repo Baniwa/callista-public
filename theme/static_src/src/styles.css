@@ -2,7 +2,7 @@
 
 @source "../../../**/*.{html,py,js}";
 
-/* Tokens de design do CALLISTA — paleta federal brasileira */
+/* Tokens de design do CALLISTA — paleta federal brasileira (tema claro) */
 @theme {
   --color-federal-900: #071D41;
   --color-federal-800: #0C326F;
@@ -13,18 +13,24 @@
   --color-federal-100: #DBE8FB;
   --color-federal-50:  #EDF5FF;
 
-  --color-sidebar-bg:  #0D1B2A;
-  --color-sidebar-hover: #1A2E44;
-  --color-sidebar-active: #1351B4;
-  --color-surface: #0F2033;
-  --color-surface-card: #162B40;
-  --color-border: #1E3A54;
+  --color-sidebar-bg:     #071D41;
+  --color-sidebar-border: #0C326F;
+  --color-surface:        #F0F4F8;
+  --color-surface-card:   #FFFFFF;
+  --color-border:         #DBE8FB;
 
-  --color-status-pr:  #EAB308;
-  --color-status-pf:  #3B82F6;
-  --color-status-pe:  #F97316;
-  --color-status-c:   #22C55E;
-  --color-overdue:    #EF4444;
+  --color-text-primary: #333333;
+  --color-text-muted:   #5C6670;
+
+  --color-status-pr-bg:  #FEF9C3;
+  --color-status-pr-fg:  #92400E;
+  --color-status-pf-bg:  #DBEAFE;
+  --color-status-pf-fg:  #1E40AF;
+  --color-status-pe-bg:  #FFEDD5;
+  --color-status-pe-fg:  #9A3412;
+  --color-status-c-bg:   #DCFCE7;
+  --color-status-c-fg:   #166534;
+  --color-overdue:       #DC2626;
 
   --font-display: "Playfair Display", Georgia, serif;
   --font-sans:    "Inter", system-ui, sans-serif;
@@ -33,14 +39,14 @@
 body {
   font-family: var(--font-sans);
   background-color: var(--color-surface);
-  color: #e2e8f0;
+  color: var(--color-text-primary);
 }
 
 @layer components {
   .form-label {
     display: block;
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: #5C6670;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 0.375rem;
@@ -50,19 +56,20 @@ body {
     width: 100%;
     border-radius: 0.375rem;
     font-size: 0.875rem;
-    color: #e2e8f0;
+    color: #333333;
     padding: 0.5rem 0.75rem;
-    background-color: #162B40;
-    border: 1px solid #1E3A54;
+    background-color: #FFFFFF;
+    border: 1px solid #C5D4EB;
     outline: none;
     transition: border-color 0.15s;
   }
 
   .form-input:focus {
-    border-color: #2670E8;
+    border-color: #1351B4;
+    box-shadow: 0 0 0 3px rgba(19, 81, 180, 0.12);
   }
 
   .form-input option {
-    background-color: #0D1B2A;
+    background-color: #FFFFFF;
   }
 }
