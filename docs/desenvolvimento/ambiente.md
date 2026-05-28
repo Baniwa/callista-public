@@ -4,11 +4,19 @@
 
 | Ferramenta | Versão mínima | Observação |
 |---|---|---|
-| Python | 3.11+ | Recomendado: 3.12 |
+| Python | 3.11+ | Testado em 3.14 — ver [ADR-002](../adr/ADR-002-django6-python314.md) |
+| Node.js | 18+ | Necessário para compilar o Tailwind CSS v4 |
+| npm | 9+ | Vem com Node.js |
 | Git | 2.x | Qualquer versão recente |
 | pip | 23+ | `pip install --upgrade pip` |
 
-O projeto **não requer Docker** para desenvolvimento local (Fase 1 e 2). Docker é previsto para deploy (Fase 6).
+O projeto **não requer Docker** para desenvolvimento local. Docker é previsto para deploy (Fase 6).
+
+!!! info "Por que Node.js?"
+    A partir da Fase 5, o projeto usa **Tailwind CSS v4** com pipeline PostCSS. O comando
+    `python manage.py tailwind build` chama o compilador Node.js internamente via
+    `django-tailwind`. Sem Node.js instalado, o CSS não é compilado e a interface não
+    carrega estilos. Ver [Fase 5 — Frontend](../fase5/frontend.md) para detalhes.
 
 ---
 
@@ -107,7 +115,31 @@ python -m pytest tests/unit/ --cov=src --cov-report=term-missing
 
 ---
 
-## 7. Rodando a Documentação (Wiki)
+## 7. Compilando o CSS (Tailwind)
+
+A partir da Fase 5, os estilos da interface são gerados pelo Tailwind CSS v4 via PostCSS.
+É necessário compilar o CSS **antes de rodar o servidor** em desenvolvimento:
+
+```bash
+# Compilação única (suficiente para desenvolvimento)
+python manage.py tailwind build
+
+# Modo watch — recompila automaticamente ao salvar arquivos CSS
+python manage.py tailwind start
+```
+
+O arquivo gerado é `theme/static/css/dist/styles.css`. Ele está incluído no repositório
+para que o deploy não dependa de Node.js em produção.
+
+!!! warning "npm install na primeira vez"
+    Na primeira vez (ou após `git clone`), o Tailwind precisa instalar seus pacotes:
+    ```bash
+    python manage.py tailwind install
+    ```
+
+---
+
+## 8. Rodando a Documentação (Wiki)
 
 ```bash
 python -m mkdocs serve --dev-addr 127.0.0.1:8001
@@ -117,7 +149,7 @@ Acesse: [http://127.0.0.1:8001](http://127.0.0.1:8001)
 
 ---
 
-## 8. Estrutura de Branches
+## 9. Estrutura de Branches
 
 ```
 main        ← produção. Nunca altere diretamente.
@@ -140,7 +172,7 @@ git push origin feature/minha-funcionalidade
 
 ---
 
-## 9. Convenções de Commit
+## 10. Convenções de Commit
 
 O projeto usa **Conventional Commits** em português, no imperativo:
 

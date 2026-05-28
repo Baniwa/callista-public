@@ -13,8 +13,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "tailwind",
+    "theme",
     "src.adapters.django_orm",
 ]
+
+TAILWIND_APP_NAME = "theme"
+INTERNAL_IPS = ["127.0.0.1"]
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -69,3 +75,7 @@ REST_FRAMEWORK = {
 }
 
 GEMINI_API_KEY = config("GEMINI_API_KEY", default="")
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/login/"

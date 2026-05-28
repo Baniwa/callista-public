@@ -1,0 +1,68 @@
+{% comment %}
+Partial reutilizável de tabela de demandas.
+Recebe: rows (lista de DemandaRow) ou page_obj (Page com DemandaRow).
+Variável "itens" deve ser passada pelo include:
+  {% include "partials/tabela_demandas.html" with itens=page_obj %}
+{% endcomment %}
+<div class="overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="text-xs uppercase tracking-wider"
+          style="border-bottom:1px solid #DBE8FB; color:#5C6670; background-color:#F0F4F8;">
+        <th class="px-6 py-3 text-left">#</th>
+        <th class="px-6 py-3 text-left">Texto</th>
+        <th class="px-6 py-3 text-left">Órgão</th>
+        <th class="px-6 py-3 text-left">Chegada</th>
+        <th class="px-6 py-3 text-left">Deadline</th>
+        <th class="px-6 py-3 text-right">Prazo</th>
+        <th class="px-6 py-3 text-left">Status</th>
+        <th class="px-6 py-3 text-left">Relator</th>
+        <th class="px-6 py-3 text-left">Revisor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in itens %}
+      <tr class="row-hover border-t" style="border-color:#EDF5FF;">
+        <td class="px-6 py-4 font-mono text-xs" style="color:#5C6670;">
+          <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}" style="color:#5C6670;">
+            {{ item.demanda.id }}
+          </a>
+        </td>
+        <td class="px-6 py-4 max-w-xs">
+          <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}"
+             class="line-clamp-2 block" style="color:#333333;">
+            {{ item.demanda.texto }}
+          </a>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+          <span class="text-xs px-2 py-0.5 rounded font-medium"
+                style="background-color:#EAF1FB; color:#1351B4; white-space:nowrap;">
+            {{ item.demanda.origem }}
+          </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
+          {{ item.demanda.dat_chegada|date:"d/m/Y" }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
+          {{ item.data_limite|date:"d/m/Y" }}
+        </td>
+        <td class="px-6 py-4 text-right font-mono font-semibold whitespace-nowrap
+                   {% if item.dias_restantes < 0 %}text-red-600{% elif item.dias_restantes <= 1 %}text-yellow-600{% else %}text-gray-600{% endif %}">
+          {{ item.dias_restantes }}d
+        </td>
+        <td class="px-6 py-4">
+          {% include "partials/status_badge.html" with status=item.demanda.status %}
+        </td>
+        <td class="px-6 py-4" style="color:#5C6670;">{{ item.relator|default:"—" }}</td>
+        <td class="px-6 py-4" style="color:#5C6670;">{{ item.revisor|default:"—" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="9" class="px-6 py-12 text-center" style="color:#9CA3AF;">
+          Nenhuma demanda encontrada.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

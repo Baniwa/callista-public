@@ -1,0 +1,239 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEPEL — CALLISTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap">
+  {% tailwind_css %}
+  <style>
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50%       { opacity: 0.1; transform: scale(0.5); }
+    }
+    @keyframes float-planet {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-9px); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .star { animation: twinkle var(--d,3s) ease-in-out infinite; animation-delay: var(--dl,0s); }
+    .planet-float { animation: float-planet 6s ease-in-out infinite; }
+    .shimmer-text {
+      background: linear-gradient(90deg, #F5C518, #FFFDE7, #FFCD07, #F59E0B, #FFCD07);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
+    .bg-slide {
+      position: absolute;
+      inset: -28px;
+      background-size: cover;
+      background-position: center 35%;
+      filter: blur(5px) brightness(0.32) saturate(0.75);
+      transition: opacity 2s ease-in-out;
+    }
+  </style>
+</head>
+
+<!--
+  FOTO DO CONGRESSO:
+  O fallback (sem a imagem) usa um gradiente azul federal.
+-->
+<body class="h-full overflow-hidden">
+
+  <!-- ── Carrossel de fotos desfocadas ────────────────────────── -->
+  <div class="fixed inset-0 pointer-events-none" style="z-index:0; overflow:hidden;">
+    <!-- Dois slides para crossfade -->
+    <div id="bg-a" class="bg-slide"></div>
+    <div id="bg-b" class="bg-slide" style="opacity:0;"></div>
+    <!-- Overlay de identidade federal -->
+    <div style="position:absolute; inset:0;
+                background:linear-gradient(160deg,
+                  rgba(1,10,20,0.55)  0%,
+                  rgba(7,29,65,0.50)  40%,
+                  rgba(13,33,84,0.45) 70%,
+                  rgba(1,10,20,0.65)  100%);"></div>
+  </div>
+
+  <!-- ── Estrelas (discretas sobre a foto) ────────────────────── -->
+  <svg class="fixed inset-0 w-full h-full pointer-events-none" style="z-index:1;" xmlns="http://www.w3.org/2000/svg">
+    <circle style="--d:2.1s;--dl:0s"   class="star" cx="4%"  cy="6%"  r="1.2" fill="white"/>
+    <circle style="--d:3.4s;--dl:.3s"  class="star" cx="11%" cy="2%"  r="1.5" fill="white"/>
+    <circle style="--d:2.8s;--dl:.8s"  class="star" cx="19%" cy="11%" r="1"   fill="white"/>
+    <circle style="--d:4.1s;--dl:.2s"  class="star" cx="27%" cy="4%"  r="2"   fill="white"/>
+    <circle style="--d:3.0s;--dl:1.1s" class="star" cx="35%" cy="1%"  r="1"   fill="white"/>
+    <circle style="--d:2.5s;--dl:.5s"  class="star" cx="44%" cy="8%"  r="1.5" fill="white"/>
+    <circle style="--d:3.7s;--dl:.0s"  class="star" cx="53%" cy="3%"  r="1"   fill="white"/>
+    <circle style="--d:2.2s;--dl:.9s"  class="star" cx="61%" cy="7%"  r="2"   fill="white"/>
+    <circle style="--d:4.3s;--dl:.4s"  class="star" cx="70%" cy="1%"  r="1"   fill="white"/>
+    <circle style="--d:3.1s;--dl:.7s"  class="star" cx="78%" cy="10%" r="1.5" fill="white"/>
+    <circle style="--d:2.6s;--dl:1.0s" class="star" cx="86%" cy="4%"  r="1"   fill="white"/>
+    <circle style="--d:3.9s;--dl:.2s"  class="star" cx="93%" cy="8%"  r="2"   fill="white"/>
+    <circle style="--d:3.5s;--dl:.3s"  class="star" cx="8%"  cy="20%" r="1.5" fill="white"/>
+    <circle style="--d:2.4s;--dl:.5s"  class="star" cx="22%" cy="16%" r="1"   fill="white"/>
+    <circle style="--d:3.8s;--dl:.9s"  class="star" cx="47%" cy="18%" r="1.5" fill="white"/>
+    <circle style="--d:4.2s;--dl:.4s"  class="star" cx="74%" cy="22%" r="1.5" fill="white"/>
+    <circle style="--d:2.9s;--dl:.4s"  class="star" cx="9%"  cy="34%" r="1.5" fill="#FDE68A"/>
+    <circle style="--d:3.6s;--dl:.7s"  class="star" cx="38%" cy="30%" r="1.8" fill="#FDE68A"/>
+    <circle style="--d:2.2s;--dl:.0s"  class="star" cx="60%" cy="28%" r="1"   fill="#FDE68A"/>
+    <circle style="--d:3.3s;--dl:.1s"  class="star" cx="88%" cy="32%" r="1.2" fill="#93C5FD"/>
+    <circle style="--d:2.7s;--dl:.6s"  class="star" cx="55%" cy="40%" r="1"   fill="#93C5FD"/>
+  </svg>
+
+  <!-- ── Cartão de login ────────────────────────────────────────── -->
+  <div class="relative flex items-center justify-center px-4"
+       style="min-height:100vh; z-index:10;">
+
+    <div class="w-full max-w-sm">
+
+      <!-- Logo + título -->
+      <div class="flex flex-col items-center gap-3 mb-8">
+        <div class="planet-float" style="filter:drop-shadow(0 0 22px rgba(255,205,7,0.6));">
+          <svg width="88" height="88" viewBox="0 0 24 24" fill="none">
+            <path d="M2 15 Q4.5 7.5 12 8.5" stroke="#FFCD07" stroke-width="1.7" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="12" cy="13" r="6.2" fill="#FFCD07"/>
+            <circle cx="9.5" cy="10.5" r="2" fill="white" fill-opacity="0.15"/>
+            <path d="M16.5 9.5 Q19 13 16.5 16.5 A6.2 6.2 0 0 1 16.5 9.5Z" fill="rgba(0,0,0,0.18)"/>
+            <path d="M12 18.2 Q20 19.5 22 13" stroke="#FFCD07" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="text-center">
+          <h1 class="text-4xl font-bold tracking-wide shimmer-text"
+              style="font-family:'Playfair Display',serif; line-height:1.1;">
+            Callista
+          </h1>
+          <p class="mt-2 text-sm font-medium"
+             style="color:rgba(255,255,255,0.65); letter-spacing:0.06em;">
+            Sistema de Gestão de Pesquisa Legislativa
+          </p>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="rounded-2xl px-7 py-7"
+           style="background:rgba(5,18,45,0.72);
+                  backdrop-filter:blur(32px);
+                  -webkit-backdrop-filter:blur(32px);
+                  border:1px solid rgba(96,165,250,0.18);
+                  box-shadow:0 30px 70px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);">
+
+        {% if form.errors %}
+        <div class="mb-5 rounded-xl px-4 py-3 text-sm"
+             style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#FCA5A5;">
+          Usuário ou senha incorretos.
+        </div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+
+          <div class="flex flex-col gap-5">
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-widest mb-2"
+                     style="color:rgba(148,197,253,0.75);">Usuário</label>
+              <input type="text" name="username" id="id_username"
+                     autocomplete="username" autofocus required
+                     class="w-full rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
+                     style="background:rgba(255,255,255,0.07);
+                            border:1px solid rgba(96,165,250,0.22);
+                            color:#e2e8f0; caret-color:#FFCD07;"
+                     onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
+                     onblur="this.style.borderColor='rgba(96,165,250,0.22)';this.style.boxShadow='none'">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-widest mb-2"
+                     style="color:rgba(148,197,253,0.75);">Senha</label>
+              <input type="password" name="password" id="id_password"
+                     autocomplete="current-password" required
+                     class="w-full rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
+                     style="background:rgba(255,255,255,0.07);
+                            border:1px solid rgba(96,165,250,0.22);
+                            color:#e2e8f0; caret-color:#FFCD07;"
+                     onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
+                     onblur="this.style.borderColor='rgba(96,165,250,0.22)';this.style.boxShadow='none'">
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 rounded-xl text-sm font-semibold tracking-wide transition-all mt-1"
+                    style="background:linear-gradient(135deg,#1351B4 0%,#2670E8 100%);
+                           color:white; box-shadow:0 4px 24px rgba(19,81,180,0.5);"
+                    onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 28px rgba(19,81,180,0.65)'"
+                    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(19,81,180,0.5)'">
+              Entrar
+            </button>
+
+          </div>
+        </form>
+      </div>
+
+      <p class="text-center mt-5 text-xs" style="color:rgba(255,255,255,0.25); letter-spacing:0.05em;">
+        Palácio do Congresso Nacional · Brasília, DF
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    const FOTOS = [
+      "{% static 'img/congresso1.jpg' %}",
+      "{% static 'img/congresso2.jpg' %}",
+      "{% static 'img/congresso3.jpg' %}",
+      "{% static 'img/congresso4.jpg' %}",
+      "{% static 'img/congresso5.jpg' %}",
+      "{% static 'img/congresso6.jpg' %}",
+      "{% static 'img/congresso7.jpg' %}",
+    ];
+
+    const bgA = document.getElementById('bg-a');
+    const bgB = document.getElementById('bg-b');
+
+    // começa em foto aleatória
+    let idx = Math.floor(Math.random() * FOTOS.length);
+    let ativo = 'a';
+
+    function preload(url) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = img.onerror = resolve;
+        img.src = url;
+      });
+    }
+
+    function aplicarFoto(el, url) {
+      el.style.backgroundImage = `url('${url}')`;
+    }
+
+    // aplica foto inicial sem transição
+    aplicarFoto(bgA, FOTOS[idx]);
+
+    async function proximaFoto() {
+      idx = (idx + 1) % FOTOS.length;
+      const proximo = ativo === 'a' ? bgB : bgA;
+      const atual   = ativo === 'a' ? bgA : bgB;
+
+      // pré-carrega antes de trocar
+      await preload(FOTOS[idx]);
+
+      aplicarFoto(proximo, FOTOS[idx]);
+      proximo.style.opacity = '1';
+      atual.style.opacity   = '0';
+
+      ativo = ativo === 'a' ? 'b' : 'a';
+    }
+
+    setInterval(proximaFoto, 60000); // segundos
+  </script>
+
+</body>
+</html>

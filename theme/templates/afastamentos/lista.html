@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Afastamentos — CALLISTA{% endblock %}
+{% block page_title %}Afastamentos{% endblock %}
+
+{% block content %}
+
+<!-- Formulário de cadastro -->
+<div class="rounded-xl p-6 mb-6"
+     style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
+  <h2 class="font-semibold mb-4" style="color:#071D41;">Registrar Afastamento</h2>
+
+  {% if erro %}
+  <div class="mb-4 rounded-lg px-4 py-3 text-sm"
+       style="background-color:#FFF1F2; border:1px solid #FECDD3; color:#9F1239;">
+    {{ erro }}
+  </div>
+  {% endif %}
+
+  <form method="post" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {% csrf_token %}
+    <input type="hidden" name="acao" value="cadastrar">
+
+    <div>
+      <label class="form-label" for="usuario_id">Membro</label>
+      <select name="usuario_id" id="usuario_id" class="form-input" required>
+        <option value="">Selecione...</option>
+        {% for u in usuarios %}
+        <option value="{{ u.id }}">{{ u.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label class="form-label" for="dat_inicial">Data inicial</label>
+      <input type="date" name="dat_inicial" id="dat_inicial"
+             class="form-input" min="{{ hoje }}" required>
+    </div>
+
+    <div>
+      <label class="form-label" for="dat_final">Data final</label>
+      <input type="date" name="dat_final" id="dat_final"
+             class="form-input" min="{{ hoje }}" required>
+    </div>
+
+    <div>
+      <label class="form-label" for="motivo">Motivo</label>
+      <select name="motivo" id="motivo" class="form-input" required>
+        <option value="">Selecione...</option>
+        {% for m in motivos %}
+        <option value="{{ m }}">{{ m }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="sm:col-span-2 lg:col-span-4">
+      <button type="submit"
+              class="px-4 py-2 rounded-md text-sm font-semibold"
+              style="background-color:#1351B4; color:white;">
+        Registrar
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Tabs de filtro -->
+<div class="flex gap-2 mb-4">
+  {% with totais_ativo=rows|length %}
+  <a href="?tab=ativo"
+     class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+     style="{% if tab == 'ativo' or not tab %}background-color:#1351B4; color:#FFFFFF;{% else %}background-color:#EAF1FB; color:#1351B4;{% endif %}">
+    Ativos
+  </a>
+  <a href="?tab=futuro"
+     class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+     style="{% if tab == 'futuro' %}background-color:#1351B4; color:#FFFFFF;{% else %}background-color:#EAF1FB; color:#1351B4;{% endif %}">
+    Futuros
+  </a>
+  <a href="?tab=finalizado"
+     class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+     style="{% if tab == 'finalizado' %}background-color:#1351B4; color:#FFFFFF;{% else %}background-color:#EAF1FB; color:#1351B4;{% endif %}">
+    Finalizados
+  </a>
+  <a href="?tab=todos"
+     class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+     style="{% if tab == 'todos' %}background-color:#1351B4; color:#FFFFFF;{% else %}background-color:#EAF1FB; color:#1351B4;{% endif %}">
+    Todos
+  </a>
+  {% endwith %}
+</div>
+
+<!-- Tabela -->
+<div class="rounded-xl overflow-hidden"
+     style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-xs uppercase tracking-wider"
+            style="border-bottom:1px solid #DBE8FB; color:#5C6670; background-color:#F0F4F8;">
+          <th class="px-6 py-3 text-left">Membro</th>
+          <th class="px-6 py-3 text-left">Início</th>
+          <th class="px-6 py-3 text-left">Fim</th>
+          <th class="px-6 py-3 text-left">Motivo</th>
+          <th class="px-6 py-3 text-left">Estado</th>
+          <th class="px-6 py-3 text-left">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        {% if tab == 'todos' or tab == row.estado or not tab and row.estado == 'ativo' %}
+        <tr class="row-hover border-t" style="border-color:#EDF5FF;">
+          <td class="px-6 py-4 font-medium" style="color:#333333;">{{ row.usuario_nome }}</td>
+          <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
+            {{ row.afastamento.dat_inicial|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap" style="color:#5C6670;">
+            {{ row.afastamento.dat_final|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4" style="color:#5C6670;">{{ row.afastamento.motivo }}</td>
+          <td class="px-6 py-4">
+            {% if row.estado == 'ativo' %}
+            <span class="text-xs px-2 py-0.5 rounded font-medium"
+                  style="background-color:#DCFCE7; color:#166534;">Ativo</span>
+            {% elif row.estado == 'futuro' %}
+            <span class="text-xs px-2 py-0.5 rounded font-medium"
+                  style="background-color:#DBEAFE; color:#1E40AF;">Futuro</span>
+            {% else %}
+            <span class="text-xs px-2 py-0.5 rounded font-medium"
+                  style="background-color:#F0F4F8; color:#5C6670;">Finalizado</span>
+            {% endif %}
+          </td>
+          <td class="px-6 py-4">
+            <form method="post" style="display:inline;"
+                  onsubmit="return confirm('Excluir este afastamento?')">
+              {% csrf_token %}
+              <input type="hidden" name="acao" value="excluir">
+              <input type="hidden" name="af_id" value="{{ row.afastamento.id }}">
+              <button type="submit"
+                      class="text-xs px-2 py-1 rounded transition-colors"
+                      style="color:#9F1239; background-color:#FFF1F2;"
+                      onmouseover="this.style.backgroundColor='#FECDD3'"
+                      onmouseout="this.style.backgroundColor='#FFF1F2'">
+                Excluir
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endif %}
+        {% empty %}
+        <tr>
+          <td colspan="6" class="px-6 py-12 text-center" style="color:#9CA3AF;">
+            Nenhum afastamento registrado.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

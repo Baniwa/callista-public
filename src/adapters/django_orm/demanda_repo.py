@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional, Sequence
 
 from src.domain.entities.demanda import Demanda
@@ -37,6 +37,55 @@ class DjangoDemandaRepository:
             self._to_entity(obj)
             for obj in DemandaModel.objects.filter(status=status.value)
         ]
+
+    def buscar_por_texto(self, q: str) -> Sequence[Demanda]:
+        from django.db.models import Q
+        return [
+            self._to_entity(obj)
+            for obj in DemandaModel.objects.filter(Q(texto__icontains=q) | Q(origem__icontains=q))
+        ]
+
+    def listar_por_usuario(self, usuario_id: int) -> Sequence[Demanda]:
+        from django.db.models import Q
+        return [
+            self._to_entity(obj)
+            for obj in DemandaModel.objects.filter(
+                Q(relator_id=usuario_id) | Q(revisor_id=usuario_id)
+            ).exclude(status="C")
+        ]
+
+    def listar_com_filtros(
+        self,
+        *,
+        texto: str = "",
+        origem: str = "",
+        status_valor: str = "",
+        relator_id: Optional[int] = None,
+        revisor_id: Optional[int] = None,
+        dat_inicial=None,
+        dat_final=None,
+    ) -> Sequence[Demanda]:
+        from django.db.models import Q
+        qs = DemandaModel.objects.all()
+        if texto:
+            qs = qs.filter(Q(texto__icontains=texto) | Q(origem__icontains=texto))
+        if origem:
+            qs = qs.filter(origem__iexact=origem)
+        if status_valor == "all":
+            pass
+        elif status_valor:
+            qs = qs.filter(status=status_valor)
+        else:
+            qs = qs.exclude(status="C")
+        if relator_id:
+            qs = qs.filter(relator_id=relator_id)
+        if revisor_id:
+            qs = qs.filter(revisor_id=revisor_id)
+        if dat_inicial:
+            qs = qs.filter(dat_chegada__gte=dat_inicial)
+        if dat_final:
+            qs = qs.filter(dat_chegada__lte=dat_final)
+        return [self._to_entity(obj) for obj in qs]
 
     def listar_ativas(self) -> Sequence[Demanda]:
         return [

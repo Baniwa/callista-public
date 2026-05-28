@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Pesquisa de Demandas — CALLISTA{% endblock %}
+{% block page_title %}Pesquisa de Demandas{% endblock %}
+
+{% block content %}
+
+<!-- Formulário de pesquisa -->
+<div class="rounded-xl p-6 mb-6"
+     style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
+  <form method="get" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    <div>
+      <label class="form-label" for="q">Texto</label>
+      <input type="text" name="q" id="q" value="{{ q }}"
+             placeholder="Buscar no texto ou órgão..."
+             class="form-input">
+    </div>
+
+    <div>
+      <label class="form-label" for="origem">Órgão</label>
+      <select name="origem" id="origem" class="form-input">
+        <option value="">Todos</option>
+        {% for o in origens %}
+        <option value="{{ o.sigla }}" {% if origem_sel == o.sigla %}selected{% endif %}>
+          {{ o.sigla }} — {{ o.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label class="form-label" for="status">Status</label>
+      <select name="status" id="status" class="form-input">
+        <option value="">Ativas</option>
+        {% for opcao in status_opcoes %}
+        {% if opcao.value %}
+        <option value="{{ opcao.value }}" {% if status_sel == opcao.value %}selected{% endif %}>
+          {{ opcao.label }}
+        </option>
+        {% endif %}
+        {% endfor %}
+        <option value="all" {% if status_sel == "all" %}selected{% endif %}>Todas</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="form-label" for="relator">Relator</label>
+      <select name="relator" id="relator" class="form-input">
+        <option value="">Qualquer</option>
+        {% for u in usuarios %}
+        <option value="{{ u.id }}" {% if relator_sel == u.id|stringformat:"s" %}selected{% endif %}>
+          {{ u.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label class="form-label" for="revisor">Revisor</label>
+      <select name="revisor" id="revisor" class="form-input">
+        <option value="">Qualquer</option>
+        {% for u in usuarios %}
+        <option value="{{ u.id }}" {% if revisor_sel == u.id|stringformat:"s" %}selected{% endif %}>
+          {{ u.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="form-label" for="dat_ini">Chegada de</label>
+        <input type="date" name="dat_ini" id="dat_ini" value="{{ dat_ini }}" class="form-input">
+      </div>
+      <div>
+        <label class="form-label" for="dat_fim">Chegada até</label>
+        <input type="date" name="dat_fim" id="dat_fim" value="{{ dat_fim }}" class="form-input">
+      </div>
+    </div>
+
+    <div class="sm:col-span-2 lg:col-span-3 flex gap-3">
+      <button type="submit"
+              class="px-4 py-2 rounded-md text-sm font-semibold transition-colors"
+              style="background-color:#1351B4; color:white;">
+        Pesquisar
+      </button>
+      <a href="{% url 'callista:pesquisa' %}"
+         class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
+         style="background-color:#EAF1FB; color:#1351B4;">
+        Limpar
+      </a>
+    </div>
+
+  </form>
+</div>
+
+<!-- Resultados -->
+{% if pesquisou %}
+<div class="rounded-xl overflow-hidden"
+     style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 2px 8px rgba(7,29,65,0.08), 0 1px 3px rgba(7,29,65,0.05);">
+  <div class="px-6 py-4" style="border-bottom:1px solid #DBE8FB;">
+    <h2 class="font-semibold" style="color:#071D41;">
+      {{ page_obj.paginator.count }} resultado{{ page_obj.paginator.count|pluralize }} encontrado{{ page_obj.paginator.count|pluralize }}
+    </h2>
+  </div>
+
+  {% include "partials/tabela_demandas.html" with itens=page_obj %}
+</div>
+
+{% include "partials/paginacao.html" %}
+
+{% endif %}
+
+{% endblock %}

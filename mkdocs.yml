@@ -30,6 +30,7 @@ nav:
   - O Projeto:
       - Apresentação e Motivação: projeto/apresentacao.md
       - Domínio Legislativo: projeto/dominio-legislativo.md
+      - Callista 1.0 — Referência de UI: projeto/callista1-referencia-ui.md
   - Arquitetura:
       - Visão Geral das Camadas: architecture/overview.md
       - Fluxo de Dados: architecture/data-flow.md
@@ -38,8 +39,15 @@ nav:
       - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
       - Adapters Django ORM: architecture/adapters-orm.md
       - Adapter de Inteligência Artificial: architecture/adapter-ia.md
+      - Adapter da API do Senado Federal: architecture/adapter-senado.md
+      - Migração do Callista 1.0: architecture/migracao-callista1.md
+      - API do Senado Federal — Análise: architecture/senado-api.md
+  - Fase 5 — Frontend:
+      - Arquitetura e Decisões: fase5/frontend.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
+      - ADR-002 · Django 6 + Python 3.14: adr/ADR-002-django6-python314.md
+      - ADR-003 · Google Fonts via link HTML: adr/ADR-003-tailwind-v4-google-fonts.md
   - Guia do Desenvolvedor:
       - Configuração do Ambiente: desenvolvimento/ambiente.md
       - Convenções de Teste: desenvolvimento/testes.md
@@ -48,6 +56,7 @@ nav:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
       - O domínio não se importa com o banco de dados: perspectivas/dominio-nao-se-importa-com-banco.md
       - A IA é só mais um detalhe de infraestrutura: perspectivas/ia-como-detalhe.md
+      - O governo já tem a API. Você só precisa conectar.: perspectivas/api-senado-como-adapter.md
 
 markdown_extensions:
   - admonition

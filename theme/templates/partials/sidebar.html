@@ -1,0 +1,60 @@
+<aside class="w-64 flex-shrink-0 flex flex-col h-screen sticky top-0"
+       style="background-color:#071D41; border-right:1px solid #0C326F; box-shadow:2px 0 10px rgba(7,29,65,0.25);">
+
+  <!-- Faixa institucional GOV.BR -->
+  <div style="height:4px; background:linear-gradient(90deg, #FFCD07 0%, #FFCD07 35%, #1351B4 35%); flex-shrink:0;"></div>
+
+  <!-- Logo -->
+  <div class="px-6 py-5 flex items-center gap-3" style="border-bottom:1px solid #0C326F;">
+    <!-- Planeta com anel (Callista = lua de Júpiter) -->
+    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none">
+      <!-- Anel atrás do planeta -->
+      <path d="M3.5 15.5 Q5 9 12 9" stroke="#FFCD07" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+      <!-- Corpo do planeta -->
+      <circle cx="12" cy="13" r="5.5" fill="#FFCD07"/>
+      <!-- Anel na frente do planeta -->
+      <path d="M12 17.5 Q19 18.5 20.5 12.5" stroke="#FFCD07" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <a href="{% url 'callista:dashboard' %}"
+       class="text-white font-semibold tracking-wide hover:text-white/80"
+       style="font-family:'Playfair Display',serif;">
+      Callista
+    </a>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-4">
+
+    <!-- DEMANDAS -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#FFCD07;">Demandas</p>
+      {% include "partials/nav_item.html" with href="/" label="Pauta do dia" icon="inbox" %}
+      {% include "partials/nav_item.html" with href="/minhas-demandas/" label="Minhas demandas" icon="users" %}
+      {% include "partials/nav_item.html" with href="/equipe/" label="Demandas da equipe" icon="users" %}
+      {% include "partials/nav_item.html" with href="/demandas/" label="Todas as demandas" icon="users" %}
+      {% include "partials/nav_item.html" with href="/pesquisa/" label="Pesquisa de demandas" icon="search" %}
+      {% include "partials/nav_item.html" with href="#" label="Trocas de demandas" icon="arrows" %}
+    </div>
+
+    <div class="mx-4 my-3" style="border-top:1px solid #0C326F;"></div>
+
+    <!-- RELATÓRIOS -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#FFCD07;">Relatórios</p>
+      {% include "partials/nav_item.html" with href="#" label="Contagem de pontos" icon="chart" %}
+      {% include "partials/nav_item.html" with href="#" label="Desempenho PG" icon="trophy" %}
+      {% include "partials/nav_item.html" with href="#" label="Relatório PG" icon="document" %}
+      {% include "partials/nav_item.html" with href="#" label="Planilha" icon="table" %}
+    </div>
+
+    <div class="mx-4 my-3" style="border-top:1px solid #0C326F;"></div>
+
+    <!-- CADASTRAR -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#FFCD07;">Cadastrar</p>
+      {% include "partials/nav_item.html" with href="/demandas/nova/" label="Demandas" icon="plus" %}
+      {% include "partials/nav_item.html" with href="#" label="Preferências" icon="cog" %}
+      {% include "partials/nav_item.html" with href="/afastamentos/" label="Afastamentos" icon="calendar" %}
+    </div>
+
+  </nav>
+</aside>
