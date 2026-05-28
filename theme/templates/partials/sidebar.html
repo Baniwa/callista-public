@@ -1,0 +1,56 @@
+<aside class="w-64 flex-shrink-0 flex flex-col h-screen sticky top-0"
+       style="background-color:#0D1B2A; border-right:1px solid #1E3A54;">
+
+  <!-- Logo -->
+  <div class="px-6 py-5 flex items-center gap-3" style="border-bottom:1px solid #1E3A54;">
+    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#2670E8" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.036 12.322a1.012 1.012 0 010-.639
+               C3.423 7.51 7.36 4.5 12 4.5c4.638 0
+               8.573 3.007 9.963 7.178.07.207.07.431
+               0 .639C20.577 16.49 16.64 19.5 12
+               19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+    </svg>
+    <a href="{% url 'callista:dashboard' %}"
+       class="text-white font-semibold tracking-wide hover:text-slate-200"
+       style="font-family:'Playfair Display',serif;">
+      Callista
+    </a>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-4">
+
+    <!-- DEMANDAS -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#5992ED;">Demandas</p>
+      {% include "partials/nav_item.html" with href="/" label="Minhas demandas" icon="inbox" %}
+      {% include "partials/nav_item.html" with href="/" label="Demandas da equipe" icon="users" %}
+      {% include "partials/nav_item.html" with href="/" label="Pesquisa de demandas" icon="search" %}
+      {% include "partials/nav_item.html" with href="/" label="Trocas de demandas" icon="arrows" %}
+    </div>
+
+    <div class="mx-4 my-3" style="border-top:1px solid #1E3A54;"></div>
+
+    <!-- RELATÓRIOS -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#5992ED;">Relatórios</p>
+      {% include "partials/nav_item.html" with href="/" label="Contagem de pontos" icon="chart" %}
+      {% include "partials/nav_item.html" with href="/" label="Desempenho PG" icon="trophy" %}
+      {% include "partials/nav_item.html" with href="/" label="Relatório PG" icon="document" %}
+      {% include "partials/nav_item.html" with href="/" label="Planilha" icon="table" %}
+    </div>
+
+    <div class="mx-4 my-3" style="border-top:1px solid #1E3A54;"></div>
+
+    <!-- CADASTRAR -->
+    <div class="px-4 mb-1">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#5992ED;">Cadastrar</p>
+      {% include "partials/nav_item.html" with href="/" label="Demandas" icon="plus" %}
+      {% include "partials/nav_item.html" with href="/" label="Preferências" icon="cog" %}
+      {% include "partials/nav_item.html" with href="/" label="Afastamentos" icon="calendar" %}
+    </div>
+
+  </nav>
+</aside>

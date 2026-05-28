@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@source "../../../**/*.{html,py,js}";
+
+/* Tokens de design do CALLISTA — paleta federal brasileira */
+@theme {
+  --color-federal-900: #071D41;
+  --color-federal-800: #0C326F;
+  --color-federal-700: #1351B4;
+  --color-federal-600: #2670E8;
+  --color-federal-500: #5992ED;
+  --color-federal-200: #C5D4EB;
+  --color-federal-100: #DBE8FB;
+  --color-federal-50:  #EDF5FF;
+
+  --color-sidebar-bg:  #0D1B2A;
+  --color-sidebar-hover: #1A2E44;
+  --color-sidebar-active: #1351B4;
+  --color-surface: #0F2033;
+  --color-surface-card: #162B40;
+  --color-border: #1E3A54;
+
+  --color-status-pr:  #EAB308;
+  --color-status-pf:  #3B82F6;
+  --color-status-pe:  #F97316;
+  --color-status-c:   #22C55E;
+  --color-overdue:    #EF4444;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans:    "Inter", system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface);
+  color: #e2e8f0;
+}

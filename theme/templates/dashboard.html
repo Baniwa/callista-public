@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — CALLISTA{% endblock %}
+{% block page_title %}Pauta do Dia{% endblock %}
+
+{% block content %}
+
+<!-- KPIs -->
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+
+  {% include "partials/kpi_card.html" with label="Em Aberto" value=kpis.em_aberto color="#2670E8" %}
+  {% include "partials/kpi_card.html" with label="Para Responder" value=kpis.para_responder color="#EAB308" %}
+  {% include "partials/kpi_card.html" with label="Para Revisar" value=kpis.para_revisar color="#3B82F6" %}
+  {% include "partials/kpi_card.html" with label="Atrasadas" value=kpis.atrasadas color="#EF4444" %}
+  {% include "partials/kpi_card.html" with label="Finalizadas Hoje" value=kpis.finalizadas_hoje color="#22C55E" %}
+
+</div>
+
+<!-- Tabela de demandas ativas -->
+<div class="rounded-xl overflow-hidden" style="background-color:#0D1B2A; border:1px solid #1E3A54;">
+  <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid #1E3A54;">
+    <h2 class="font-semibold text-slate-100">Minhas Demandas Ativas</h2>
+    <a href="#"
+       class="text-xs px-3 py-1.5 rounded-md font-medium transition-colors"
+       style="background-color:#1351B4; color:white;" href="#">
+      + Nova demanda
+    </a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-xs uppercase tracking-wider text-slate-500" style="border-bottom:1px solid #1E3A54;">
+          <th class="px-6 py-3 text-left">#</th>
+          <th class="px-6 py-3 text-left">Texto</th>
+          <th class="px-6 py-3 text-left">Órgão</th>
+          <th class="px-6 py-3 text-left">Chegada</th>
+          <th class="px-6 py-3 text-left">Deadline</th>
+          <th class="px-6 py-3 text-right">Prazo</th>
+          <th class="px-6 py-3 text-left">Status</th>
+          <th class="px-6 py-3 text-left">Relator</th>
+          <th class="px-6 py-3 text-left">Revisor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in demandas %}
+        <tr class="border-t transition-colors hover:bg-white/5"
+            style="border-color:#1E3A54;">
+          <td class="px-6 py-4 text-slate-500 font-mono text-xs">{{ item.demanda.id }}</td>
+          <td class="px-6 py-4 text-slate-200 max-w-xs">
+            <span class="line-clamp-2">{{ item.demanda.texto }}</span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-xs px-2 py-0.5 rounded font-medium"
+                  style="background-color:#1E3A54; color:#C5D4EB;">
+              {{ item.demanda.origem }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+            {{ item.demanda.dat_chegada|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4 text-slate-400 whitespace-nowrap">
+            {{ item.data_limite|date:"d/m/Y" }}
+          </td>
+          <td class="px-6 py-4 text-right font-mono font-semibold whitespace-nowrap
+                     {% if item.dias_restantes < 0 %}text-red-400{% elif item.dias_restantes <= 1 %}text-yellow-400{% else %}text-slate-300{% endif %}">
+            {{ item.dias_restantes }}d
+          </td>
+          <td class="px-6 py-4">
+            {% include "partials/status_badge.html" with status=item.demanda.status %}
+          </td>
+          <td class="px-6 py-4 text-slate-400">{{ item.relator|default:"—" }}</td>
+          <td class="px-6 py-4 text-slate-400">{{ item.revisor|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" class="px-6 py-12 text-center text-slate-500">
+            Nenhuma demanda ativa no momento.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

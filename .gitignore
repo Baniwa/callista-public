@@ -50,3 +50,7 @@ CLAUDE.md
 
 # Claude Code — configurações locais
 .claude/settings.local.json
+
+# Node / Tailwind
+node_modules/
+theme/static_src/node_modules/

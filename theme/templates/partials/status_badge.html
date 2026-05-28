@@ -1,0 +1,11 @@
+{% if status == "PR" %}
+  <span class="text-xs px-2 py-0.5 rounded font-medium" style="background-color:#422006; color:#EAB308;">Pend. Resposta</span>
+{% elif status == "PF" %}
+  <span class="text-xs px-2 py-0.5 rounded font-medium" style="background-color:#172554; color:#93C5FD;">Pend. Revisão</span>
+{% elif status == "PE" %}
+  <span class="text-xs px-2 py-0.5 rounded font-medium" style="background-color:#431407; color:#FB923C;">Pend. Externa</span>
+{% elif status == "C" %}
+  <span class="text-xs px-2 py-0.5 rounded font-medium" style="background-color:#052e16; color:#4ADE80;">Concluída</span>
+{% else %}
+  <span class="text-xs px-2 py-0.5 rounded font-medium" style="background-color:#1E3A54; color:#94A3B8;">{{ status }}</span>
+{% endif %}

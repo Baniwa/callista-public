@@ -1,3 +1,8 @@
 from django.urls import path
+from . import dashboard
 
-urlpatterns: list = []
+app_name = "callista"
+
+urlpatterns = [
+    path("", dashboard.dashboard, name="dashboard"),
+]
