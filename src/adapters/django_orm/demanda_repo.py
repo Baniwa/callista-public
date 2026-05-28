@@ -38,6 +38,13 @@ class DjangoDemandaRepository:
             for obj in DemandaModel.objects.filter(status=status.value)
         ]
 
+    def buscar_por_texto(self, q: str) -> Sequence[Demanda]:
+        from django.db.models import Q
+        return [
+            self._to_entity(obj)
+            for obj in DemandaModel.objects.filter(Q(texto__icontains=q) | Q(origem__icontains=q))
+        ]
+
     def listar_ativas(self) -> Sequence[Demanda]:
         return [
             self._to_entity(obj)

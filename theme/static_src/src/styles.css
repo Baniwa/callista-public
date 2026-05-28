@@ -42,6 +42,57 @@ body {
   color: var(--color-text-primary);
 }
 
+/* ── Dark mode ────────────────────────────────────────────────── */
+/* Aplica quando JS adiciona class="dark" ao <html>              */
+html.dark body {
+  background-color: #0F2033;
+  color: #e2e8f0;
+}
+html.dark [style*="background-color:#FFFFFF"] {
+  background-color: #0D1B2A !important;
+}
+html.dark [style*="background-color:#F0F4F8"] {
+  background-color: #162B40 !important;
+}
+html.dark [style*="border:1px solid #DBE8FB"] {
+  border: 1px solid #1E3A54 !important;
+}
+html.dark [style*="border-bottom:1px solid #DBE8FB"] {
+  border-bottom: 1px solid #1E3A54 !important;
+}
+html.dark [style*="border-color:#DBE8FB"] {
+  border-color: #1E3A54 !important;
+}
+html.dark [style*="color:#071D41"] {
+  color: #e2e8f0 !important;
+}
+html.dark [style*="color:#333333"] {
+  color: #e2e8f0 !important;
+}
+html.dark [style*="color:#5C6670"] {
+  color: #94a3b8 !important;
+}
+html.dark [style*="color:#9CA3AF"] {
+  color: #64748b !important;
+}
+html.dark [style*="background-color:#EAF1FB"] {
+  background-color: #1E3A54 !important;
+}
+html.dark [style*="color:#1351B4"] {
+  color: #93C5FD !important;
+}
+html.dark [style*="box-shadow:0 1px 4px rgba(7,29,65"] {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+}
+html.dark [style*="box-shadow:0 2px 8px rgba(7,29,65"] {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
+}
+html.dark input[style*="background-color:#F0F4F8"] {
+  background-color: #0D1B2A !important;
+  color: #e2e8f0 !important;
+  border-color: #1E3A54 !important;
+}
+
 @layer components {
   .form-label {
     display: block;

@@ -53,8 +53,12 @@ def lista(request: HttpRequest) -> HttpResponse:
     hoje = date.today()
     status_filtro = request.GET.get("status", "")
 
+    q = request.GET.get("q", "").strip()
     valores_validos = {s.value for s in StatusDemanda}
-    if status_filtro in valores_validos:
+
+    if q:
+        demandas = demanda_repo.buscar_por_texto(q)
+    elif status_filtro in valores_validos:
         demandas = demanda_repo.listar_por_status(StatusDemanda(status_filtro))
     elif status_filtro == "all":
         demandas = list(demanda_repo.listar_ativas()) + list(
@@ -69,6 +73,7 @@ def lista(request: HttpRequest) -> HttpResponse:
         "rows": rows,
         "status_filtro": status_filtro,
         "status_opcoes": STATUS_OPCOES,
+        "q": q,
     })
 
 
