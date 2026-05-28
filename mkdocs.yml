@@ -57,6 +57,7 @@ nav:
       - O domínio não se importa com o banco de dados: perspectivas/dominio-nao-se-importa-com-banco.md
       - A IA é só mais um detalhe de infraestrutura: perspectivas/ia-como-detalhe.md
       - O governo já tem a API. Você só precisa conectar.: perspectivas/api-senado-como-adapter.md
+      - A interface também é um detalhe: perspectivas/frontend-como-detalhe.md
 
 markdown_extensions:
   - admonition
