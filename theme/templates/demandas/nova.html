@@ -5,6 +5,8 @@
 
 {% block content %}
 
+<div class="max-w-2xl mx-auto">
+
 <div class="mb-6">
   <a href="{% url 'callista:demanda_lista' %}"
      class="text-sm transition-colors" style="color:#1351B4;">
@@ -12,7 +14,7 @@
   </a>
 </div>
 
-<div class="max-w-2xl">
+<div>
 
   {% if erro %}
   <div class="mb-6 rounded-lg px-4 py-3 text-sm"
@@ -94,6 +96,8 @@
     </form>
   </div>
 </div>
+
+</div><!-- fecha max-w-2xl mx-auto -->
 
 <script>
 function atualizarCampos(select) {

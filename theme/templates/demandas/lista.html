@@ -46,10 +46,7 @@
       </thead>
       <tbody>
         {% for item in rows %}
-        <tr class="border-t transition-colors"
-            style="border-color:#EDF5FF;"
-            onmouseover="this.style.backgroundColor='#F0F7FF'"
-            onmouseout="this.style.backgroundColor=''">
+        <tr class="row-hover border-t" style="border-color:#EDF5FF;">
           <td class="px-6 py-4 font-mono text-xs" style="color:#5C6670;">
             <a href="{% url 'callista:demanda_detalhe' item.demanda.id %}" style="color:#5C6670;">
               {{ item.demanda.id }}

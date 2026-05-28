@@ -11,6 +11,12 @@ class DjangoUsuarioRepository:
         except UsuarioModel.DoesNotExist:
             return None
 
+    def buscar_por_email(self, email: str) -> Optional[Usuario]:
+        try:
+            return self._to_entity(UsuarioModel.objects.get(email=email))
+        except UsuarioModel.DoesNotExist:
+            return None
+
     def listar_ativos_visiveis(self) -> Sequence[Usuario]:
         return [
             self._to_entity(obj)

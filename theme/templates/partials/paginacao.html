@@ -1,0 +1,23 @@
+{% load callista_tags %}
+{% if page_obj.has_other_pages %}
+<div class="flex items-center justify-between mt-5 px-1">
+  <span class="text-xs" style="color:#5C6670;">
+    Exibindo {{ page_obj.start_index }}–{{ page_obj.end_index }} de {{ page_obj.paginator.count }} registros
+  </span>
+  <div class="flex items-center gap-2">
+    {% if page_obj.has_previous %}
+    <a href="{% querystring_replace pagina=page_obj.previous_page_number %}"
+       class="text-xs px-3 py-1.5 rounded-md transition-colors"
+       style="background-color:#EAF1FB; color:#1351B4;">← Anterior</a>
+    {% endif %}
+    <span class="text-xs font-medium" style="color:#5C6670;">
+      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+    </span>
+    {% if page_obj.has_next %}
+    <a href="{% querystring_replace pagina=page_obj.next_page_number %}"
+       class="text-xs px-3 py-1.5 rounded-md transition-colors"
+       style="background-color:#EAF1FB; color:#1351B4;">Próxima →</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}

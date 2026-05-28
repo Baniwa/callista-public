@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
@@ -30,6 +31,7 @@ class KPIs:
     finalizadas_hoje: int
 
 
+@login_required
 def dashboard(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -74,7 +76,14 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         finalizadas_hoje=finalizadas_hoje,
     )
 
+    aba = request.GET.get("aba", "recentes")
+    if aba == "atrasadas":
+        demandas_exibir = [r for r in rows if r.dias_restantes < 0]
+    else:
+        demandas_exibir = rows[:20]
+
     return render(request, "dashboard.html", {
         "kpis": kpis,
-        "demandas": rows,
+        "demandas": demandas_exibir,
+        "aba": aba,
     })

@@ -1,4 +1,6 @@
 from datetime import date
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
@@ -11,6 +13,11 @@ from src.domain.value_objects.status import StatusDemanda
 from src.infrastructure.container import build_cadastrar_demanda
 
 from .dashboard import DemandaRow
+
+
+def _paginar(lista, request, por_pagina=20):
+    p = Paginator(lista, por_pagina)
+    return p.get_page(request.GET.get("pagina", 1))
 
 
 def _build_rows(demandas, usuario_repo, hoje):
@@ -47,6 +54,7 @@ STATUS_OPCOES = [
 ]
 
 
+@login_required
 def lista(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -77,6 +85,7 @@ def lista(request: HttpRequest) -> HttpResponse:
     })
 
 
+@login_required
 def detalhe(request: HttpRequest, demanda_id: int) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -104,6 +113,7 @@ def detalhe(request: HttpRequest, demanda_id: int) -> HttpResponse:
     })
 
 
+@login_required
 def nova(request: HttpRequest) -> HttpResponse:
     origem_repo = DjangoOrigemDemandaRepository()
     origens = origem_repo.listar()
@@ -136,4 +146,128 @@ def nova(request: HttpRequest) -> HttpResponse:
     return render(request, "demandas/nova.html", {
         "origens": origens,
         "hoje": date.today().isoformat(),
+    })
+
+
+@login_required
+def minhas_demandas(request: HttpRequest) -> HttpResponse:
+    usuario_repo = DjangoUsuarioRepository()
+    demanda_repo = DjangoDemandaRepository()
+    hoje = date.today()
+
+    meu_usuario = usuario_repo.buscar_por_email(request.user.email)
+    tab = request.GET.get("tab", "todas")
+
+    if meu_usuario:
+        todas = demanda_repo.listar_por_usuario(meu_usuario.id)
+        if tab == "responder":
+            demandas = [d for d in todas if d.status == StatusDemanda.PENDENTE_RESPOSTA and d.id_relator == meu_usuario.id]
+        elif tab == "revisar":
+            demandas = [d for d in todas if d.status == StatusDemanda.PENDENTE_REVISAO and d.id_revisor == meu_usuario.id]
+        else:
+            demandas = list(todas)
+        contagens = {
+            "responder": sum(1 for d in todas if d.status == StatusDemanda.PENDENTE_RESPOSTA and d.id_relator == meu_usuario.id),
+            "revisar": sum(1 for d in todas if d.status == StatusDemanda.PENDENTE_REVISAO and d.id_revisor == meu_usuario.id),
+            "todas": len(list(todas)),
+        }
+    else:
+        demandas = []
+        contagens = {"responder": 0, "revisar": 0, "todas": 0}
+
+    rows = _build_rows(demandas, usuario_repo, hoje)
+    page_obj = _paginar(rows, request)
+
+    return render(request, "demandas/minhas_demandas.html", {
+        "page_obj": page_obj,
+        "tab": tab,
+        "contagens": contagens,
+        "meu_usuario": meu_usuario,
+    })
+
+
+@login_required
+def equipe(request: HttpRequest) -> HttpResponse:
+    demanda_repo = DjangoDemandaRepository()
+    usuario_repo = DjangoUsuarioRepository()
+    hoje = date.today()
+    status_filtro = request.GET.get("status", "")
+    valores_validos = {s.value for s in StatusDemanda}
+
+    if status_filtro in valores_validos:
+        demandas = demanda_repo.listar_por_status(StatusDemanda(status_filtro))
+    elif status_filtro == "all":
+        demandas = list(demanda_repo.listar_ativas()) + list(
+            demanda_repo.listar_por_status(StatusDemanda.CONCLUIDA)
+        )
+    else:
+        demandas = demanda_repo.listar_ativas()
+
+    rows = _build_rows(demandas, usuario_repo, hoje)
+    page_obj = _paginar(rows, request)
+
+    return render(request, "demandas/equipe.html", {
+        "page_obj": page_obj,
+        "status_filtro": status_filtro,
+        "status_opcoes": STATUS_OPCOES,
+    })
+
+
+@login_required
+def pesquisa(request: HttpRequest) -> HttpResponse:
+    demanda_repo = DjangoDemandaRepository()
+    usuario_repo = DjangoUsuarioRepository()
+    origem_repo = DjangoOrigemDemandaRepository()
+    hoje = date.today()
+
+    origens = origem_repo.listar()
+    usuarios = usuario_repo.listar_ativos_visiveis()
+
+    q = request.GET.get("q", "").strip()
+    origem = request.GET.get("origem", "").strip()
+    status_valor = request.GET.get("status", "")
+    relator_id_raw = request.GET.get("relator", "")
+    revisor_id_raw = request.GET.get("revisor", "")
+    dat_ini_raw = request.GET.get("dat_ini", "")
+    dat_fim_raw = request.GET.get("dat_fim", "")
+
+    pesquisou = any([q, origem, status_valor, relator_id_raw, revisor_id_raw, dat_ini_raw, dat_fim_raw])
+    rows = []
+    page_obj = None
+
+    if pesquisou:
+        relator_id = int(relator_id_raw) if relator_id_raw.isdigit() else None
+        revisor_id = int(revisor_id_raw) if revisor_id_raw.isdigit() else None
+        try:
+            dat_inicial = date.fromisoformat(dat_ini_raw) if dat_ini_raw else None
+            dat_final = date.fromisoformat(dat_fim_raw) if dat_fim_raw else None
+        except ValueError:
+            dat_inicial = dat_final = None
+
+        demandas = demanda_repo.listar_com_filtros(
+            texto=q,
+            origem=origem,
+            status_valor=status_valor,
+            relator_id=relator_id,
+            revisor_id=revisor_id,
+            dat_inicial=dat_inicial,
+            dat_final=dat_final,
+        )
+        rows = _build_rows(demandas, usuario_repo, hoje)
+        page_obj = _paginar(rows, request)
+
+    return render(request, "demandas/pesquisa.html", {
+        "page_obj": page_obj,
+        "rows": rows,
+        "origens": origens,
+        "usuarios": usuarios,
+        "status_opcoes": STATUS_OPCOES,
+        "pesquisou": pesquisou,
+        "q": q,
+        "origem_sel": origem,
+        "status_sel": status_valor,
+        "relator_sel": relator_id_raw,
+        "revisor_sel": revisor_id_raw,
+        "dat_ini": dat_ini_raw,
+        "dat_fim": dat_fim_raw,
     })
