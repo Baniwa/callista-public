@@ -99,3 +99,119 @@ class RespostaModel(models.Model):
 
     def __str__(self) -> str:
         return f"Resposta de {self.usuario.nome} para demanda #{self.demanda_id}"
+
+
+
+class RevisaoModel(models.Model):
+    """Revisão de uma demanda — entidade separada da Resposta.
+    Equivale ao model FeedbackDemandas do Callista 1.0 (tabela feedback_demandas).
+    """
+    demanda = models.OneToOneField(
+        DemandaModel, on_delete=models.CASCADE, related_name="revisao"
+    )
+    usuario = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="revisoes"
+    )
+    texto = models.TextField()
+    dat_revisao = models.DateTimeField(auto_now_add=True)
+    editado = models.BooleanField(default=False)
+    dat_edicao = models.DateTimeField(null=True, blank=True)
+    editado_por = models.ForeignKey(
+        UsuarioModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="revisoes_editadas",
+    )
+
+    class Meta:
+        db_table = "callista_revisao"
+        ordering = ["dat_revisao"]
+
+    def __str__(self) -> str:
+        return f"Revisão de {self.usuario.nome} para demanda #{self.demanda_id}"
+
+
+class HistoricoAtribuicaoModel(models.Model):
+    """Rastreia cada atribuição de relator ou revisor a uma demanda.
+    Equivale ao model HistoricoAtribuicao do Callista 1.0.
+    """
+    TIPO_CHOICES = [
+        ("RES", "Resposta"),
+        ("REV", "Revisão"),
+    ]
+
+    demanda = models.ForeignKey(
+        DemandaModel, on_delete=models.CASCADE, related_name="historico_atribuicoes"
+    )
+    usuario = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="historico_atribuicoes"
+    )
+    tipo = models.CharField(max_length=3, choices=TIPO_CHOICES)
+    data_atribuicao = models.DateTimeField(auto_now_add=True)
+    valido = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "callista_historico_atrib"
+        ordering = ["data_atribuicao"]
+
+    def __str__(self) -> str:
+        return f"{self.tipo} — demanda #{self.demanda_id} → {self.usuario.nome}"
+
+
+class PendenciaExternaModel(models.Model):
+    """Justificativa e controle de tempo para demandas com status PE.
+    Equivale ao model PendenciaExterna do Callista 1.0 (tabela pendencia_externa).
+    """
+    demanda = models.OneToOneField(
+        DemandaModel, on_delete=models.CASCADE, related_name="pendencia_externa"
+    )
+    justificativa = models.TextField()
+    criador = models.ForeignKey(
+        UsuarioModel, on_delete=models.PROTECT, related_name="pendencias_criadas"
+    )
+    data_inicio = models.DateTimeField(auto_now_add=True)
+    data_fim = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "callista_pendencia_externa"
+
+    def __str__(self) -> str:
+        return f"Pendência externa — demanda #{self.demanda_id}"
+
+
+class ProjetoLeiModel(models.Model):
+    """Snapshot de um Projeto de Lei rastreado via API do Senado Federal.
+
+    Cada vez que o use case RastrearPL é executado, este registro é atualizado
+    com os dados mais recentes da API. A comparação com o snapshot anterior
+    permite detectar mudanças de status.
+    """
+    id_senado = models.IntegerField(unique=True)
+    identificacao = models.CharField(max_length=50)
+    sigla = models.CharField(max_length=10)
+    numero = models.IntegerField()
+    ano = models.IntegerField()
+    ementa = models.TextField()
+    tramitando = models.BooleanField()
+    situacao_atual = models.CharField(max_length=200)
+    sigla_situacao = models.CharField(max_length=20, blank=True)
+    dat_situacao = models.DateField()
+    url_documento = models.CharField(max_length=500, blank=True)
+    autoria = models.CharField(max_length=500, blank=True)
+    dat_ultima_atualizacao = models.DateTimeField()
+    demanda = models.ForeignKey(
+        DemandaModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="projetos_lei",
+    )
+    dat_snapshot = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "callista_projeto_lei"
+        ordering = ["-dat_ultima_atualizacao"]
+
+    def __str__(self) -> str:
+        return self.identificacao
