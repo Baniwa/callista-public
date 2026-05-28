@@ -39,8 +39,9 @@ nav:
       - Algoritmo de Sorteio Justo: architecture/sorteio-justo.md
       - Adapters Django ORM: architecture/adapters-orm.md
       - Adapter de Inteligência Artificial: architecture/adapter-ia.md
+      - Adapter da API do Senado Federal: architecture/adapter-senado.md
       - Migração do Callista 1.0: architecture/migracao-callista1.md
-      - API do Senado Federal (Fase 4): architecture/senado-api.md
+      - API do Senado Federal — Análise: architecture/senado-api.md
   - Decisões (ADR):
       - ADR-001 · Clean Architecture: adr/ADR-001-clean-architecture.md
   - Guia do Desenvolvedor:
@@ -51,6 +52,7 @@ nav:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
       - O domínio não se importa com o banco de dados: perspectivas/dominio-nao-se-importa-com-banco.md
       - A IA é só mais um detalhe de infraestrutura: perspectivas/ia-como-detalhe.md
+      - O governo já tem a API. Você só precisa conectar.: perspectivas/api-senado-como-adapter.md
 
 markdown_extensions:
   - admonition
