@@ -55,6 +55,8 @@ nav:
       - Configuração do Ambiente: desenvolvimento/ambiente.md
       - Convenções de Teste: desenvolvimento/testes.md
       - Django Admin e Depuração de Imports/Migrations: desenvolvimento/admin-e-depuracao.md
+      - Análise de Segurança: desenvolvimento/seguranca.md
+      - Testes Pendentes: desenvolvimento/testes-pendentes.md
   - API: api/endpoints.md
   - Perspectivas:
       - Clean Architecture em Sistemas Públicos: perspectivas/por-que-clean-architecture-em-sistemas-governamentais.md
@@ -62,6 +64,8 @@ nav:
       - A IA é só mais um detalhe de infraestrutura: perspectivas/ia-como-detalhe.md
       - O governo já tem a API. Você só precisa conectar.: perspectivas/api-senado-como-adapter.md
       - A interface também é um detalhe: perspectivas/frontend-como-detalhe.md
+  - Fase 7 — Relatórios PG:
+      - Escopo e Perguntas de Negócio: fase7/relatorios-pg.md
 
 markdown_extensions:
   - admonition
