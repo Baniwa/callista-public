@@ -1,6 +1,23 @@
 from django.db import models
 
 
+class OrigemDemandaModel(models.Model):
+    sigla = models.CharField(max_length=10, unique=True)
+    nome = models.CharField(max_length=100)
+    prazo_padrao_dias = models.PositiveSmallIntegerField()
+    tem_numero = models.BooleanField(default=False)
+    ativo = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "callista_origem_demanda"
+        ordering = ["sigla"]
+        verbose_name = "Origem de Demanda"
+        verbose_name_plural = "Origens de Demanda"
+
+    def __str__(self) -> str:
+        return f"{self.sigla} — {self.nome}"
+
+
 class UsuarioModel(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
@@ -25,6 +42,8 @@ class FeriadoModel(models.Model):
     class Meta:
         db_table = "callista_feriado"
         ordering = ["data"]
+        verbose_name = "Feriado"
+        verbose_name_plural = "Feriados"
 
     def __str__(self) -> str:
         return f"{self.nome} ({self.data})"
@@ -41,6 +60,8 @@ class AfastamentoModel(models.Model):
     class Meta:
         db_table = "callista_afastamento"
         unique_together = [("usuario", "dat_inicial", "dat_final")]
+        verbose_name = "Afastamento"
+        verbose_name_plural = "Afastamentos"
 
     def __str__(self) -> str:
         return f"{self.usuario.nome}: {self.dat_inicial} → {self.dat_final}"
@@ -79,6 +100,8 @@ class DemandaModel(models.Model):
     class Meta:
         db_table = "callista_demanda"
         ordering = ["-dat_chegada"]
+        verbose_name = "Demanda"
+        verbose_name_plural = "Demandas"
 
     def __str__(self) -> str:
         return f"[{self.status}] {self.origem} #{self.num_origem or self.pk}"
