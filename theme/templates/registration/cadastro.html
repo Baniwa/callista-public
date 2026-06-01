@@ -39,7 +39,7 @@
   </style>
 </head>
 
-<body class="h-full overflow-hidden">
+<body class="overflow-y-auto" style="min-height:100vh;">
 
   <!-- Fundo desfocado (foto estática) -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0; overflow:hidden;">
@@ -65,32 +65,32 @@
   </svg>
 
   <!-- Conteúdo -->
-  <div class="relative flex items-center justify-center px-4"
-       style="min-height:100vh; z-index:10;">
+  <div class="relative flex justify-center px-4" style="padding-top:2.5rem; padding-bottom:2rem; z-index:10;">
 
     <div class="w-full max-w-md">
 
       <!-- Logo -->
-      <div class="flex flex-col items-center gap-3 mb-7">
-        <div class="planet-float" style="filter:drop-shadow(0 0 22px rgba(255,205,7,0.6));">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+      <div class="flex flex-col items-center mb-5" style="gap:0.6rem;">
+        <div class="planet-float" style="filter:drop-shadow(0 0 24px rgba(255,205,7,0.65));">
+          <svg width="68" height="68" viewBox="0 0 24 24" fill="none">
             <path d="M2 15 Q4.5 7.5 12 8.5" stroke="#FFCD07" stroke-width="1.7" stroke-linecap="round" opacity="0.5"/>
             <circle cx="12" cy="13" r="6.2" fill="#FFCD07"/>
             <circle cx="9.5" cy="10.5" r="2" fill="white" fill-opacity="0.15"/>
+            <path d="M16.5 9.5 Q19 13 16.5 16.5 A6.2 6.2 0 0 1 16.5 9.5Z" fill="rgba(0,0,0,0.18)"/>
             <path d="M12 18.2 Q20 19.5 22 13" stroke="#FFCD07" stroke-width="1.7" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="text-center">
-          <h1 class="text-3xl font-bold tracking-wide shimmer-text"
-              style="font-family:'Playfair Display',serif; line-height:1.1;">Callista</h1>
-          <p class="mt-1 text-xs font-medium" style="color:rgba(255,255,255,0.55); letter-spacing:0.06em;">
-            Cadastro de novo membro — SEPEL
+        <div class="text-center" style="margin-top:0.1rem;">
+          <h1 class="font-bold tracking-wide shimmer-text"
+              style="font-family:'Playfair Display',serif; font-size:1.75rem; line-height:1.1;">Callista</h1>
+          <p class="mt-1 text-xs font-medium" style="color:rgba(255,255,255,0.5); letter-spacing:0.08em;">
+            Cadastro de novo membro · SEPEL
           </p>
         </div>
       </div>
 
       <!-- Card -->
-      <div class="rounded-2xl px-7 py-6"
+      <div class="rounded-2xl px-6 py-5"
            style="background:rgba(5,18,45,0.78);
                   backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px);
                   border:1px solid rgba(96,165,250,0.18);
@@ -98,15 +98,15 @@
 
         <form method="post" novalidate>
           {% csrf_token %}
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
 
             <!-- Nome completo -->
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+              <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                      style="color:rgba(148,197,253,0.75);">Nome completo</label>
               <input type="text" name="nome" value="{{ post.nome|default:'' }}"
                      autocomplete="name" autofocus required
-                     class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                     class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                      style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.nome %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                      onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                      onblur="this.style.boxShadow='none'">
@@ -116,22 +116,22 @@
             <!-- E-mail + Matrícula lado a lado -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+                <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                        style="color:rgba(148,197,253,0.75);">E-mail</label>
                 <input type="email" name="email" value="{{ post.email|default:'' }}"
                        autocomplete="email" required
-                       class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                       class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                        style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.email %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                        onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                        onblur="this.style.boxShadow='none'">
                 {% if erros.email %}<p class="mt-1 text-xs" style="color:#FCA5A5;">{{ erros.email }}</p>{% endif %}
               </div>
               <div>
-                <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+                <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                        style="color:rgba(148,197,253,0.75);">Matrícula</label>
                 <input type="text" name="matricula" value="{{ post.matricula|default:'' }}"
                        required
-                       class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                       class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                        style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.matricula %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                        onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                        onblur="this.style.boxShadow='none'">
@@ -141,11 +141,11 @@
 
             <!-- Cargo -->
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+              <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                      style="color:rgba(148,197,253,0.75);">Cargo <span style="color:rgba(148,197,253,0.4); font-weight:400;">(opcional)</span></label>
               <input type="text" name="cargo" value="{{ post.cargo|default:'' }}"
                      placeholder="ex: Pesquisador Legislativo"
-                     class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                     class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                      style="background:rgba(255,255,255,0.07); border:1px solid rgba(96,165,250,0.22); color:#e2e8f0; caret-color:#FFCD07;"
                      onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                      onblur="this.style.boxShadow='none'">
@@ -153,10 +153,10 @@
 
             <!-- Código de acesso -->
             <div>
-              <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+              <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                      style="color:rgba(148,197,253,0.75);">Código de acesso SEPEL</label>
               <input type="text" name="codigo_setor" autocomplete="off" required
-                     class="w-full rounded-xl px-4 py-2.5 text-sm outline-none font-mono tracking-widest"
+                     class="w-full rounded-xl px-4 py-2 text-sm outline-none font-mono tracking-widest"
                      style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.codigo_setor %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                      onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                      onblur="this.style.boxShadow='none'">
@@ -170,20 +170,20 @@
             <!-- Senha + Confirmar lado a lado -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+                <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                        style="color:rgba(148,197,253,0.75);">Senha</label>
                 <input type="password" name="senha" autocomplete="new-password" required
-                       class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                       class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                        style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.senha %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                        onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                        onblur="this.style.boxShadow='none'">
                 {% if erros.senha %}<p class="mt-1 text-xs" style="color:#FCA5A5;">{{ erros.senha }}</p>{% endif %}
               </div>
               <div>
-                <label class="block text-xs font-semibold uppercase tracking-widest mb-1.5"
+                <label class="block text-xs font-semibold uppercase tracking-widest mb-1"
                        style="color:rgba(148,197,253,0.75);">Confirmar</label>
                 <input type="password" name="senha2" autocomplete="new-password" required
-                       class="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                       class="w-full rounded-xl px-4 py-2 text-sm outline-none"
                        style="background:rgba(255,255,255,0.07); border:1px solid {% if erros.senha2 %}rgba(239,68,68,0.5){% else %}rgba(96,165,250,0.22){% endif %}; color:#e2e8f0; caret-color:#FFCD07;"
                        onfocus="this.style.borderColor='rgba(99,179,237,0.6)';this.style.boxShadow='0 0 0 3px rgba(99,179,237,0.12)'"
                        onblur="this.style.boxShadow='none'">
@@ -204,9 +204,11 @@
         </form>
       </div>
 
-      <p class="text-center mt-4 text-xs" style="color:rgba(255,255,255,0.35);">
-        Já tem acesso?
-        <a href="{% url 'callista:login' %}" style="color:rgba(148,197,253,0.7);">Entrar</a>
+      <p class="text-center mt-3">
+        <a href="{% url 'callista:login' %}" class="text-xs"
+           style="color:rgba(255,205,7,0.5);">
+          ← Voltar ao login
+        </a>
       </p>
 
     </div>

@@ -51,29 +51,52 @@
   <div class="flex flex-col gap-4">
 
     <!-- Prazo -->
-    <div class="rounded-xl p-5" style="background-color:#FFFFFF; border:1px solid #DBE8FB; box-shadow:0 1px 4px rgba(7,29,65,0.07), 0 1px 2px rgba(7,29,65,0.04);">
-      <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color:#5C6670;">Prazo</p>
-      <div class="flex flex-col gap-2">
-        <div class="flex justify-between text-sm">
-          <span style="color:#5C6670;">Chegada</span>
-          <span style="color:#333333;">{{ demanda.dat_chegada|date:"d/m/Y" }}</span>
+    <div class="rounded-xl overflow-hidden" style="border:1px solid #DBE8FB; box-shadow:0 1px 4px rgba(7,29,65,0.07);">
+      {% if dias_restantes < 0 %}
+        {% with urgencia_bg="#FEF2F2" urgencia_border="#FECACA" urgencia_texto="#DC2626" urgencia_label="Atrasada" %}
+      {% elif dias_restantes <= 2 %}
+        {% with urgencia_bg="#FFFBEB" urgencia_border="#FDE68A" urgencia_texto="#D97706" urgencia_label="Urgente" %}
+      {% else %}
+        {% with urgencia_bg="#F0F9FF" urgencia_border="#BAE6FD" urgencia_texto="#0369A1" urgencia_label="No prazo" %}
+      {% endif %}
+
+      <!-- Topo colorido com contagem -->
+      <div class="px-5 pt-4 pb-3 flex items-center justify-between"
+           style="background-color:{{ urgencia_bg }}; border-bottom:1px solid {{ urgencia_border }};">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider mb-0.5" style="color:{{ urgencia_texto }}; opacity:0.7;">
+            {{ urgencia_label }}
+          </p>
+          <p class="text-3xl font-bold font-mono leading-none" style="color:{{ urgencia_texto }};">
+            {% if dias_restantes < 0 %}{{ dias_restantes|stringformat:"d" }}{% else %}{{ dias_restantes }}{% endif %}
+            <span class="text-base font-medium" style="opacity:0.6;"> dias</span>
+          </p>
         </div>
-        <div class="flex justify-between text-sm">
-          <span style="color:#5C6670;">Deadline</span>
-          <span style="color:#333333;">{{ data_limite|date:"d/m/Y" }}</span>
+        <div class="rounded-full w-10 h-10 flex items-center justify-center"
+             style="background-color:{{ urgencia_texto }}; opacity:0.12;"></div>
+      </div>
+
+      <!-- Datas -->
+      <div class="px-5 py-4 flex flex-col gap-2.5" style="background-color:#FFFFFF;">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium" style="color:#9CA3AF;">Chegada</span>
+          <span class="text-sm font-mono" style="color:#374151;">{{ demanda.dat_chegada|date:"d/m/Y" }}</span>
         </div>
-        <div class="flex justify-between text-sm">
-          <span style="color:#5C6670;">Restam</span>
-          <span class="font-semibold font-mono
-                       {% if dias_restantes < 0 %}text-red-600{% elif dias_restantes <= 1 %}text-yellow-600{% else %}text-gray-700{% endif %}">
-            {{ dias_restantes }}d
-          </span>
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium" style="color:#9CA3AF;">Vencimento</span>
+          <span class="text-sm font-mono font-semibold" style="color:{{ urgencia_texto }};">{{ data_limite|date:"d/m/Y" }}</span>
         </div>
-        <div class="flex justify-between text-sm">
-          <span style="color:#5C6670;">Prazo (du)</span>
-          <span style="color:#333333;">{{ demanda.prazo.dias_uteis }}du</span>
+        <div class="mt-1 pt-2.5" style="border-top:1px solid #F3F4F6;">
+          <div class="flex items-center justify-between">
+            <span class="text-xs" style="color:#D1D5DB;">Prazo contratual</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded-full" style="background-color:#F3F4F6; color:#6B7280;">
+              {{ demanda.prazo.dias_uteis }} dias úteis
+            </span>
+          </div>
         </div>
       </div>
+
+      {% endwith %}
     </div>
 
     <!-- Atribuição -->

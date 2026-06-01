@@ -5,19 +5,15 @@
   <div style="height:4px; background:linear-gradient(90deg, #FFCD07 0%, #FFCD07 35%, #1351B4 35%); flex-shrink:0;"></div>
 
   <!-- Logo -->
-  <div class="px-6 py-5 flex items-center gap-3" style="border-bottom:1px solid #0C326F;">
-    <!-- Planeta com anel (Callista = lua de Júpiter) -->
+  <div class="py-5 flex flex-col items-center gap-1.5" style="border-bottom:1px solid #0C326F;">
     <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none">
-      <!-- Anel atrás do planeta -->
       <path d="M3.5 15.5 Q5 9 12 9" stroke="#FFCD07" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
-      <!-- Corpo do planeta -->
       <circle cx="12" cy="13" r="5.5" fill="#FFCD07"/>
-      <!-- Anel na frente do planeta -->
       <path d="M12 17.5 Q19 18.5 20.5 12.5" stroke="#FFCD07" stroke-width="1.6" stroke-linecap="round"/>
     </svg>
     <a href="{% url 'callista:dashboard' %}"
        class="text-white font-semibold tracking-wide hover:text-white/80"
-       style="font-family:'Playfair Display',serif;">
+       style="font-family:'Playfair Display',serif; font-size:1.05rem;">
       Callista
     </a>
   </div>
@@ -52,7 +48,6 @@
     <div class="px-4 mb-1">
       <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#FFCD07;">Cadastrar</p>
       {% include "partials/nav_item.html" with href="/demandas/nova/" label="Demandas" icon="plus" %}
-      {% include "partials/nav_item.html" with href="#" label="Preferências" icon="cog" %}
       {% include "partials/nav_item.html" with href="/afastamentos/" label="Afastamentos" icon="calendar" %}
     </div>
 
