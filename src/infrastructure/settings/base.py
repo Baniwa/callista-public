@@ -76,6 +76,10 @@ REST_FRAMEWORK = {
 
 GEMINI_API_KEY = config("GEMINI_API_KEY", default="")
 
+# Código interno de acesso ao cadastro de novos funcionários.
+# O gestor define este valor no .env. Padrão provisório para novos deploys.
+CALLISTA_CODIGO_SETOR = config("CALLISTA_CODIGO_SETOR", default="SFSEPEL26")
+
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/login/"

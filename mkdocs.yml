@@ -42,6 +42,7 @@ nav:
       - Adapter da API do Senado Federal: architecture/adapter-senado.md
       - Migração do Callista 1.0: architecture/migracao-callista1.md
       - API do Senado Federal — Análise: architecture/senado-api.md
+      - Migração para LDAP/AD (deploy Senado): arquitetura/autenticacao-ldap.md
   - Fase 5 — Frontend:
       - Arquitetura e Decisões: fase5/frontend.md
   - Decisões (ADR):
@@ -49,6 +50,7 @@ nav:
       - ADR-002 · Django 6 + Python 3.14: adr/ADR-002-django6-python314.md
       - ADR-003 · Google Fonts via link HTML: adr/ADR-003-tailwind-v4-google-fonts.md
       - ADR-004 · Django Admin como painel de gestão: adr/ADR-004-django-admin-gestao.md
+      - ADR-005 · Autenticação por código de setor: adr/ADR-005-autenticacao-codigo-setor.md
   - Guia do Desenvolvedor:
       - Configuração do Ambiente: desenvolvimento/ambiente.md
       - Convenções de Teste: desenvolvimento/testes.md
