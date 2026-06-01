@@ -1,5 +1,5 @@
 from datetime import date
-from django.contrib.auth.decorators import login_required
+from src.adapters.views.mixins import usuario_ativo_required
 from django.core.paginator import Paginator
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -54,7 +54,7 @@ STATUS_OPCOES = [
 ]
 
 
-@login_required
+@usuario_ativo_required
 def lista(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -85,7 +85,7 @@ def lista(request: HttpRequest) -> HttpResponse:
     })
 
 
-@login_required
+@usuario_ativo_required
 def detalhe(request: HttpRequest, demanda_id: int) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -113,7 +113,7 @@ def detalhe(request: HttpRequest, demanda_id: int) -> HttpResponse:
     })
 
 
-@login_required
+@usuario_ativo_required
 def nova(request: HttpRequest) -> HttpResponse:
     origem_repo = DjangoOrigemDemandaRepository()
     origens = origem_repo.listar()
@@ -149,7 +149,7 @@ def nova(request: HttpRequest) -> HttpResponse:
     })
 
 
-@login_required
+@usuario_ativo_required
 def minhas_demandas(request: HttpRequest) -> HttpResponse:
     usuario_repo = DjangoUsuarioRepository()
     demanda_repo = DjangoDemandaRepository()
@@ -186,7 +186,7 @@ def minhas_demandas(request: HttpRequest) -> HttpResponse:
     })
 
 
-@login_required
+@usuario_ativo_required
 def equipe(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
@@ -213,7 +213,7 @@ def equipe(request: HttpRequest) -> HttpResponse:
     })
 
 
-@login_required
+@usuario_ativo_required
 def pesquisa(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()

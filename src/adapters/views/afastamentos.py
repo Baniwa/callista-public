@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from django.contrib.auth.decorators import login_required
+from src.adapters.views.mixins import usuario_ativo_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
@@ -34,7 +34,7 @@ def _classificar(af: Afastamento, hoje: date) -> str:
     return "ativo"
 
 
-@login_required
+@usuario_ativo_required
 def lista(request: HttpRequest) -> HttpResponse:
     repo = DjangoAfastamentoRepository()
     usuario_repo = DjangoUsuarioRepository()

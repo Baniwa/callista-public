@@ -1,3 +1,6 @@
+import hmac
+import uuid
+
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -6,6 +9,23 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
 from src.adapters.django_orm.models import UsuarioModel
+
+
+def _codigo_valido(informado: str) -> bool:
+    # hmac.compare_digest evita timing attack na comparação do código de setor
+    return hmac.compare_digest(
+        informado.strip(),
+        settings.CALLISTA_CODIGO_SETOR,
+    )
+
+
+def _gerar_username(matricula: str, email: str) -> str:
+    candidatos = [matricula.lower(), email.split("@")[0].lower()]
+    for candidato in candidatos:
+        if not User.objects.filter(username=candidato).exists():
+            return candidato
+    # fallback único se ambos existirem
+    return f"{matricula.lower()}-{uuid.uuid4().hex[:6]}"
 
 
 @require_http_methods(["GET", "POST"])
@@ -22,12 +42,12 @@ def cadastro(request: HttpRequest) -> HttpResponse:
         email = post.get("email", "").strip().lower()
         matricula = post.get("matricula", "").strip().upper()
         cargo = post.get("cargo", "").strip()
-        codigo = post.get("codigo_setor", "").strip()
+        codigo = post.get("codigo_setor", "")
         senha = post.get("senha", "")
         senha2 = post.get("senha2", "")
 
-        if not nome:
-            erros["nome"] = "Nome é obrigatório."
+        if not nome or len(nome.split()) < 2:
+            erros["nome"] = "Informe nome e sobrenome."
         if not email:
             erros["email"] = "E-mail é obrigatório."
         elif User.objects.filter(email=email).exists():
@@ -36,7 +56,7 @@ def cadastro(request: HttpRequest) -> HttpResponse:
             erros["matricula"] = "Matrícula é obrigatória."
         elif UsuarioModel.objects.filter(matricula=matricula).exists():
             erros["matricula"] = "Esta matrícula já está cadastrada."
-        if codigo != settings.CALLISTA_CODIGO_SETOR:
+        if not _codigo_valido(codigo):
             erros["codigo_setor"] = "Código de acesso inválido. Solicite ao gestor da equipe."
         if len(senha) < 8:
             erros["senha"] = "A senha deve ter no mínimo 8 caracteres."
@@ -44,16 +64,13 @@ def cadastro(request: HttpRequest) -> HttpResponse:
             erros["senha2"] = "As senhas não coincidem."
 
         if not erros:
-            username = matricula.lower()
-            if User.objects.filter(username=username).exists():
-                username = email.split("@")[0]
-
+            partes = nome.split()
             user = User.objects.create_user(
-                username=username,
+                username=_gerar_username(matricula, email),
                 email=email,
                 password=senha,
-                first_name=nome.split()[0],
-                last_name=" ".join(nome.split()[1:]),
+                first_name=partes[0],
+                last_name=" ".join(partes[1:]),
             )
 
             UsuarioModel.objects.create(

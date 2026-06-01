@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from django.contrib.auth.decorators import login_required
+from src.adapters.views.mixins import usuario_ativo_required
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
@@ -31,7 +31,7 @@ class KPIs:
     finalizadas_hoje: int
 
 
-@login_required
+@usuario_ativo_required
 def dashboard(request: HttpRequest) -> HttpResponse:
     demanda_repo = DjangoDemandaRepository()
     usuario_repo = DjangoUsuarioRepository()
