@@ -21,7 +21,7 @@ env/
 /staticfiles/
 local_settings.py
 
-# Environment variables — NUNCA commitar
+# Environment variables - NUNCA commitar
 .env
 .env.*
 !.env.example
@@ -48,11 +48,11 @@ htmlcov/
 
 CLAUDE.md
 
-# Claude Code — configurações locais
-.claude/settings.local.json
+# Claude Code
+.claude/
 
 # Node / Tailwind
 node_modules/
 theme/static_src/node_modules/
-# CSS compilado do Tailwind deve ser commitado para o projeto funcionar após clone
+# CSS compilado do Tailwind deve ser commitado para o projeto funcionar apos clone
 !theme/static/css/dist/
